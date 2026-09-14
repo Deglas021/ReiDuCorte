@@ -10,3 +10,8 @@ body {
   color: var(--texto-principal);
   line-height: 1.5;
 }
+
+img {
+  display: block;
+  max-width: 100%;
+}
