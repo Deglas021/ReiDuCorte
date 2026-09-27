@@ -1,66 +1,77 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rei du Corte</title>
-    <link rel="stylesheet" href="css/global.css" />
+    <title>Página Inicial - Rei du Corte</title>
     <link rel="stylesheet" href="css/index.css" />
   </head>
-  <nav></nav>
   <body>
-    <div class="Hero">
-      <div class="logo">
-        <img src="" alt="Logo-da-marca" />
-      </div>
-      <div class="botao-de-agendar">
-        <button id="Butao-de-agendar" class="botao">Agendar</button>
-      </div>
-    </div>
-    <div class="card">
-      <h1>Corte</h1>
-    </div>
-    <div class="card">
-      <h1>Barba</h1>
-    </div>
-    <div class="card">
-      <h1>Sobrancelha</h1>
-    </div>
-    <div class="card">
-      <h1>Combos</h1>
-    </div>
-    <div class="card">
-      <div class="foto do espaco">
-        <img src="" alt="Foto do espaço" />
-      </div>
-      <div class="texto do espaco">
-        <h1>Texto do espaço</h1>
-      </div>
-    </div>
-    <div class="portifolio">
-      <img src="" alt="foto1" />
-      <img src="" alt="foto2" />
-      <img src="" alt="foto3" />
-    </div>
-    <div class="barbeiros">
-      <div class="foto do barbeiro 1">
-        <img src="" alt="Foto do barbeiro" />
-      </div>
-      <div class="texto do barbeiro 1">
-        <h1>Texto do barbeiro</h1>
-      </div>
-      <div class="foto do barbeiro 2">
-        <img src="" alt="Foto do barbeiro" />
-      </div>
-      <div class="texto do barbeiro 2">
-        <h1>Texto do barbeiro</h1>
-      </div>
-      <div class="foto do barbeiro 3">
-        <img src="" alt="Foto do barbeiro" />
-      </div>
-      <div class="texto do barbeiro 3">
-        <h1>Texto do barbeiro</h1>
-      </div>
-    </div>
+    <!-- Menu Superior -->
+    <header>
+      <nav class="nav-container">
+        <!-- Juntei a imagem e o texto dentro do MESMO link da logo -->
+        <a href="#" class="logo">
+          <img src="logo rc.png" alt="Logo da Barbearia" />
+          REI DU CORTE👑
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#">Início</a></li>
+          <li><a href="#">Portfólio</a></li>
+          <li><a href="#">Preços</a></li>
+          <li><a href="#">Contato</a></li>
+          <li><a href="#">Login</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main>
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>REI DU CORTE👑</h1>
+          <p>A BARBEARIA QUE VOCÊ PROCURA.</p>
+          <div class="btn-group">
+            <a href="#" class="btn btn-primary">Conheça Nossa Barbearia</a>
+            <a href="#" class="btn btn-secondary">NOSSOS SERVIÇOS</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção de Recursos -->
+      <section class="features">
+        <h2 class="features-title">Por que nos escolher?</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">✂️</div>
+            <h3>ANOS DE EXPERIÊNCIA</h3>
+            <p>
+              Com anos de experiência no ramo da barbearia, garantimos o melhor
+              serviço para você.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">💈</div>
+            <h3>LOCALIZAÇÃO IDEAL</h3>
+            <p>
+              Nossa barbearia está localizada em um lugar fácil de encontrar,
+              com fácil acesso para todos os clientes.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">💇‍♂️</div>
+            <h3>CORTES VARIADOS</h3>
+            <p>
+              Oferecemos uma ampla variedade de cortes de cabelo para todos os
+              estilos e preferências.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
