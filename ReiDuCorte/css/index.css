@@ -1,193 +1,418 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+/* ===== Variáveis ===== */
+:root {
+  --fundo: #f5f5f5;
+  --preto: #0d0d0d;
+  --escuro: #1a1a1a;
+  --cinza: #d9d9d9;
+  --dourado: #c9a45a;
+  --altura-topo: 100px;
+  --escala: 1;
+  --dourado-claro: #e5c98b;
 }
-
+ 
+/* ===== Base ===== */
+*, *::before, *::after { box-sizing: border-box; }
+ 
+html {
+  scroll-behavior: smooth;
+  font-size: calc(16px * var(--escala, 1));
+}
+ 
 body {
-  background-color: #fdfdfd;
-  color: #333333;
-  line-height: 1.6;
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  background: var(--fundo);
+  color: var(--preto);
+  line-height: 1.3;
+  overflow-wrap: break-word;
 }
-
-/* Barra de Navegação */
-header {
-  background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  position: fixed;
-  width: 100%;
+ 
+img { max-width: 100%; height: auto; display: block; }
+ 
+h1, h2, h3, p { margin: 0; }
+ 
+h2 {
+  font-size: 2.2rem;
+  font-weight: 400;
+}
+ 
+/* Evita que o topo fixo cubra o título ao rolar */
+section[id] {
+  scroll-margin-top: var(--altura-topo);
+}
+ 
+:focus-visible {
+  outline: 3px solid var(--dourado);
+  outline-offset: 3px;
+}
+ 
+/* ===== Topo ===== */
+/* Fontes do topo em px de propósito: não escalam com A-/A+, para o cabeçalho não quebrar. */
+.topo {
+  position: sticky;
   top: 0;
-  left: 0;
-  z-index: 1000;
-}
-
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 20px; /* Reduzido um pouco para acomodar a logo de 130px de forma elegante */
+  z-index: 10;
+  min-height: var(--altura-topo);
   display: flex;
-  justify-content: space-between;
-  align-items: center; /* Alinha a logo inteira e os links do menu pelo centro vertical */
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 8px 32px;
+  background: var(--preto);
 }
-
-.logo {
-  display: flex;
-  align-items: center; /* Alinha o texto da logo e a imagem perfeitamente no centro entre si */
-  gap: 15px; /* Espaço dourado entre a imagem e o texto */
-  font-size: 24px;
-  font-weight: 800;
-  color: #0f0f0f;
+ 
+.topo__logo img { height: 80px; width: auto; }
+ 
+.topo__menu { display: flex; gap: 24px; }
+ 
+.topo__menu a {
+  color: var(--fundo);
   text-decoration: none;
+  font-size: 25.6px;
 }
-
-.logo img {
-  height: 80px; /* Diminuído ligeiramente de 130px para não estourar muito o menu, mas você pode mudar para o valor que quiser */
-  width: auto;
-  display: block;
-}
-
-.nav-links {
+ 
+.topo__menu a:hover { color: var(--dourado); }
+ 
+.topo__acoes {
   display: flex;
-  list-style: none;
-  gap: 25px;
+  align-items: center;
+  gap: 32px;
+  margin-left: auto;
 }
-
-.nav-links a {
-  text-decoration: none;
-  color: #555555;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: #007bff;
-}
-
-/* Seção Principal (Hero Section) */
-.hero {
-  padding: 180px 20px 80px 20px; /* Aumentado o topo para o menu maior não cobrir o título */
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  text-align: center;
-}
-
-.hero-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.hero h1 {
-  font-size: 48px;
-  color: #212529;
-  margin-bottom: 20px;
-  font-weight: 800;
-}
-
-.hero p {
-  font-size: 20px;
-  color: #6c757d;
-  margin-bottom: 35px;
-}
-
-.btn-group {
+ 
+.acessibilidade { display: flex; gap: 12px; }
+ 
+.btn-acess {
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 15px;
+  min-width: 44px;
+  height: 40px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--cinza);
+  color: var(--preto);
+  font: inherit;
+  font-size: 19.2px;
+  cursor: pointer;
 }
-
+ 
+.btn-acess:hover { background: var(--dourado); }
+ 
+.btn-acess svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+ 
+/* Lua no tema claro, sol no escuro */
+.icone-sol { display: none; }
+ 
+.btn-login {
+  background: var(--dourado);
+  color: var(--preto);
+  text-decoration: none;
+  font-size: 25.6px;
+  padding: 0 24px;
+  line-height: 1.5;
+}
+ 
+.btn-login:hover { filter: brightness(1.1); }
+ 
+/* ===== Botões ===== */
 .btn {
   display: inline-block;
-  padding: 12px 30px;
-  border-radius: 25px;
-  font-weight: 600;
   text-decoration: none;
-  transition: all 0.3s ease;
+  font-size: 1.5rem;
+  padding: 2px 20px;
+  border: 1px solid var(--preto);
 }
-
-.btn-primary {
-  background-color: #007bff;
-  color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+ 
+.btn--escuro {
+  background: var(--preto);
+  color: var(--dourado);
 }
-
-.btn-primary:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+ 
+.btn--escuro:hover { background: var(--dourado); color: var(--preto); }
+ 
+.btn--contorno {
+  background: transparent;
+  color: var(--preto);
 }
-
-.btn-secondary {
-  background-color: transparent;
-  color: #007bff;
-  border: 2px solid #007bff;
-}
-
-.btn-secondary:hover {
-  background-color: #007bff;
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-/* Seção de Recursos (Features) */
-.features {
-  max-width: 1200px;
-  margin: 80px auto;
-  padding: 0 20px;
-}
-
-.features-title {
+ 
+.btn--contorno:hover { background: var(--preto); color: var(--fundo); }
+ 
+/* ===== Hero ===== */
+.hero {
+  padding: 130px 24px 150px;
   text-align: center;
-  font-size: 32px;
-  margin-bottom: 50px;
-  color: #212529;
 }
-
-.features-grid {
+ 
+.hero h1 {
+  font-size: 3.2rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+ 
+.hero p {
+  font-size: 1.7rem;
+  margin-top: 4px;
+}
+ 
+.hero__botoes {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 36px;
+  margin-top: 24px;
+}
+ 
+/* ===== Sobre ===== */
+.sobre {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: center;
+  gap: 40px;
+  padding-right: 6%;
+  margin-bottom: 120px;
 }
-
-.feature-card {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+ 
+.sobre img {
+  width: 100%;
+  height: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 0 12px 12px 0;
+}
+ 
+.sobre__texto h2 {
+  font-size: 2.6rem;
+  margin-bottom: 4px;
+}
+ 
+.sobre__texto p {
+  background: var(--escuro);
+  color: var(--dourado);
+  font-size: 1.6rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+ 
+/* ===== Serviços ===== */
+.servicos {
+  padding: 0 18px;
+  margin-bottom: 120px;
   text-align: center;
-  transition: transform 0.3s ease;
 }
-
-.feature-card:hover {
-  transform: translateY(-5px);
+ 
+.servicos h2 {
+  font-size: 2.6rem;
+  margin-bottom: 90px;
 }
-
-.feature-icon {
-  font-size: 40px;
-  color: #007bff;
-  margin-bottom: 15px;
+ 
+.servicos__grade {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  text-align: left;
 }
-
-.feature-card h3 {
-  font-size: 22px;
+ 
+.card {
+  background: var(--cinza);
+  border: 1px solid var(--preto);
+  border-radius: 6px;
+  min-height: 230px;
+  padding: 36px 12px 12px;
+}
+ 
+.card h3 {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+ 
+.card p {
+  font-size: 1.5rem;
+  color: #333;
+}
+ 
+/* ===== Barbeiros ===== */
+.barbeiros {
+  padding: 0 24px;
+  margin-bottom: 100px;
+  text-align: center;
+}
+ 
+.barbeiros h2 {
+  font-size: 2.6rem;
+  margin-bottom: 40px;
+}
+ 
+.barbeiros__lista {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px 50px;
+}
+ 
+.barbeiro {
+  width: 230px;
+}
+ 
+.barbeiro__foto {
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--cinza);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  text-align: center;
+  overflow: hidden;
+}
+ 
+.barbeiro h3 {
+  font-size: 1.7rem;
+  font-weight: 400;
   margin-bottom: 12px;
-  color: #212529;
 }
-
-.feature-card p {
-  color: #6c757d;
+ 
+.barbeiro p {
+  font-size: 1.3rem;
 }
-
-/* Responsividade para Celulares */
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
-  .hero h1 {
-    font-size: 32px;
-  }
-  .hero p {
-    font-size: 16px;
-  }
-  .btn-group {
-    flex-direction: column;
-  }
+ 
+/* ===== Contato ===== */
+.contato {
+  background: var(--escuro);
+  color: var(--fundo);
+  padding: 20px 60px 50px;
 }
+ 
+.contato h2 {
+  color: var(--dourado);
+  text-align: center;
+  margin-bottom: 24px;
+}
+ 
+.contato dl { margin: 0; }
+ 
+.contato dt {
+  font-size: 1.15rem;
+  margin-top: 28px;
+}
+ 
+.contato dd {
+  margin: 8px 0 0;
+  color: var(--dourado);
+  font-size: 1.6rem;
+}
+ 
+/* ===== Rodapé ===== */
+.rodape {
+  background: var(--preto);
+  padding: 20px 0 20px 8%;
+}
+ 
+.rodape img {
+  height: 100px;
+  width: auto;
+}
+ 
+/* ===== Tablet ===== */
+@media (max-width: 900px) {
+  :root { --altura-topo: 84px; }
+ 
+  .topo { padding: 8px 20px; gap: 8px 16px; }
+  .topo__logo img { height: 66px; }
+  .topo__menu { gap: 16px; }
+  .topo__acoes { gap: 16px; }
+  .topo__menu a,
+  .btn-login { font-size: 20.8px; }
+ 
+  .hero { padding: 90px 20px 100px; }
+ 
+  .sobre {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+    margin-bottom: 80px;
+  }
+ 
+  .sobre img { border-radius: 12px; max-height: 340px; }
+ 
+  .servicos { margin-bottom: 80px; }
+  .servicos h2 { margin-bottom: 40px; }
+  .servicos__grade { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+ 
+  .contato { padding: 20px 28px 40px; }
+}
+ 
+/* ===== Celular ===== */
+@media (max-width: 600px) {
+  :root { --altura-topo: 112px; }
+ 
+  html { font-size: calc(15px * var(--escala, 1)); }
+ 
+  /* Linha 1: logo + botões + login. Linha 2: links */
+  .topo { padding: 8px 16px; gap: 6px 12px; }
+  .topo__logo img { height: 56px; }
+  .topo__menu { order: 3; width: 100%; justify-content: center; gap: 22px; }
+  .topo__acoes { gap: 10px; }
+  .acessibilidade { gap: 8px; }
+  .btn-login { padding: 0 12px; }
+  .topo__menu a,
+  .btn-login { font-size: 19.5px; }
+  .btn-acess { font-size: 18px; }
+ 
+  .hero { padding: 60px 16px 70px; }
+  .hero__botoes { gap: 14px; }
+ 
+  .servicos__grade { grid-template-columns: 1fr; }
+  .card { min-height: 0; padding: 20px 14px 16px; }
+ 
+  .barbeiros__lista { flex-direction: column; align-items: center; }
+ 
+  .rodape { padding-left: 0; }
+  .rodape img { margin: 0 auto; }
+}
+ 
+/* ===== Tema escuro (ativado por data-tema="dark" na tag <html>) ===== */
+/* Só entram aqui as propriedades que MUDAM em relação ao tema claro. */
+html[data-tema="dark"] { color-scheme: dark; }
+html[data-tema="dark"] body { background: var(--preto); color: var(--dourado-claro); }
+html[data-tema="dark"] h2,
+html[data-tema="dark"] .hero h1 { color: var(--dourado); }
+ 
+html[data-tema="dark"] .topo { background: var(--escuro); }
+html[data-tema="dark"] .topo__menu a { color: var(--dourado-claro); }
+html[data-tema="dark"] .topo__menu a:hover { color: var(--dourado); }
+html[data-tema="dark"] .btn-login { background: var(--preto); color: var(--dourado-claro); }
+ 
+html[data-tema="dark"] .icone-lua { display: none; }
+html[data-tema="dark"] .icone-sol { display: block; }
+ 
+html[data-tema="dark"] .btn--escuro {
+  background: var(--cinza);
+  color: var(--preto);
+  border-color: var(--cinza);
+}
+html[data-tema="dark"] .btn--escuro:hover { background: var(--dourado); border-color: var(--dourado); }
+html[data-tema="dark"] .btn--contorno { border-color: var(--dourado); color: var(--dourado); }
+html[data-tema="dark"] .btn--contorno:hover { background: var(--dourado); color: var(--preto); }
+ 
+html[data-tema="dark"] .sobre__texto p { color: var(--dourado-claro); }
+html[data-tema="dark"] .card { background: var(--escuro); border-color: var(--preto); }
+html[data-tema="dark"] .card p { color: var(--dourado-claro); }
+html[data-tema="dark"] .barbeiro__foto { color: var(--preto); }
+html[data-tema="dark"] .contato { color: var(--dourado-claro); }
+ 
+/* ===== Respeita preferência de menos movimento ===== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+ 
