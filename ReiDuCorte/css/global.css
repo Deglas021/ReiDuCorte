@@ -92,6 +92,38 @@ img { max-width: 100%; height: auto; display: block; }
 .icone-sol { display: none; }
 html[data-tema="dark"] .icone-lua { display: none; }
 html[data-tema="dark"] .icone-sol { display: block; }
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 2px 20px;
+  border: 1px solid var(--preto);
+}
+ 
+.btn--escuro {
+  background: var(--preto);
+  color: var(--dourado);
+}
+.btn--escuro:hover { background: var(--dourado); color: var(--preto); }
+ 
+.btn--contorno {
+  background: transparent;
+  color: var(--preto);
+}
+.btn--contorno:hover { background: var(--preto); color: var(--branco); }
+ 
+
+html[data-tema="dark"] .btn--escuro {
+  background: var(--cinza);
+  color: var(--preto);
+  border-color: var(--cinza);
+}
+html[data-tema="dark"] .btn--escuro:hover { background: var(--dourado); border-color: var(--dourado); }
+html[data-tema="dark"] .btn--contorno { border-color: var(--dourado); color: var(--dourado); }
+html[data-tema="dark"] .btn--contorno:hover { background: var(--dourado); color: var(--preto); }
  
  
 @media (prefers-reduced-motion: reduce) {
