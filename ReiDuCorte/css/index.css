@@ -26,7 +26,7 @@ section[id] {
   background: var(--preto);
 }
  
-.topo__logo img { height: 80px; width: auto; }
+.topo__logo img { height: 100px; width: auto; }
  
 .topo__menu { display: flex; gap: 24px; }
  
