@@ -1,88 +1,25 @@
-.login {
-  display: grid;
-  grid-template-columns: 36% 1fr;
-  min-height: 100vh;
-  min-height: 100dvh;
-}
+/* =====================================================================
+   login.css — regras SÓ DO LOGIN
+   AFETA: SÓ LOGIN. Prefixo: .login__
+   O layout comum (painéis, card, título, rótulos, campos) está no acesso.css.
+   Este arquivo vem DEPOIS do acesso.css e do global.css, então as regras
+   daqui vencem quando a força é a mesma.
+   ===================================================================== */
  
  
 
-.login__lateral {
-  background: var(--escuro);
-  padding: 40px;
-}
-
- 
-.login__logo { display: inline-block; }
-.login__logo img { width: 1000px; height: auto; }   
-
-
-.login__principal {
-  display: grid;
-  grid-template-rows: 1fr auto 1fr;
-  padding: 0 24px;
-  row-gap: 24px;
-}
-
- 
-.login__acessibilidade {
-  grid-row: 1;
-  justify-self: end;
-  align-self: start;
-  display: flex;
-  gap: 12px;
-  padding-top: 48px;
-}
+.login__titulo { text-align: center; }  
  
 
-.login__card {
-  grid-row: 2;
-  width: 100%;
-  max-width: 32rem;
-  margin: 0 auto;
-  padding: 32px;
-  background: var(--card-fundo);
-  border-radius: 6px;
-}
- 
-.login__card h1 {
-  margin: 0 0 24px;     
-  text-align: center;
-  font-size: 3.2rem;
-  font-weight: 400;
-  line-height: 1.1;
-  color: var(--card-titulo);   
-}
+.login__form label { margin-top: 18px; }
+.login__form > label:first-child { margin-top: 0; }
  
  
-.login__card label {
-  display: block;
-  margin-top: 18px;
-  font-size: 1.5rem;     
-  color: var(--card-titulo);
-}
- 
-.login__card form > label:first-child { margin-top: 0; }
- 
-.login__card input {
-  display: block;
-  width: 100%;
-  height: 2.75rem;        
-  margin-top: 6px;
-  padding: 0 12px;
-  font: inherit;       
-  font-size: 1.25rem;
-  color: var(--preto);
-  background: var(--branco);
-  border: 1px solid var(--preto);
-  border-radius: 4px;
-}
-
 .login__entrar {
   display: block;
   width: 100%;
   margin-top: 24px;
-  padding: 6px 0;
+  padding: 6px 0;     
 }
  
 
@@ -93,29 +30,8 @@
   font-size: 1.5rem;
   line-height: 1;
   color: var(--card-titulo);
-  text-decoration: none;
+  text-decoration: underline;
 }
  
 .login__cadastro:hover { text-decoration: underline; }
- 
- 
-@media (max-width: 900px) {
-  .login {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-  }
- 
-  .login__lateral { padding: 12px 20px; }
-  .login__logo img { width: 64px; }
- 
-  .login__acessibilidade { padding-top: 16px; }
-  .login__principal { padding-bottom: 24px; }
-}
- 
- 
-@media (max-width: 600px) {
-  .login__principal { padding-left: 16px; padding-right: 16px; }
-  .login__card { padding: 20px; }
-
-}
  
