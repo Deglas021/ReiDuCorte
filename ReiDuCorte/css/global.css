@@ -1,8 +1,8 @@
 :root {
-  --branco: #f5f5f5;
+  --cinza: #d9d9d9; 
   --preto: #0d0d0d;
   --escuro: #1a1a1a;
-  --cinza: #d9d9d9;
+  --branco: #f5f5f5;
   --dourado: #c9a45a;
   --dourado-claro: #e5c98b;
  
@@ -10,12 +10,15 @@
   --escala: 1;
  
 
-  --fundo-pagina: var(--branco);  
+  --fundo-pagina: var(--cinza);  
   --texto: var(--escuro);         
   --titulo: var(--preto);         
-  --card-fundo: var(--cinza);     
+  --card-fundo: var(--branco);     
   --card-titulo: var(--preto);    
-  --card-texto: var(--escuro);    
+  --card-texto: var(--escuro);
+  
+  --topo-fundo: var(--preto);
+  --topo-link: var(--cinza);
 }
  
  
@@ -23,11 +26,14 @@ html[data-tema="dark"] {
   color-scheme: dark;
  
   --fundo-pagina: var(--preto);
-  --texto: var(--cinza);
-  --titulo: var(--branco);
+  --texto: var(--branco);
+  --titulo: var(--cinza);
   --card-fundo: var(--escuro);
-  --card-titulo: var(--branco);
-  --card-texto: var(--cinza);
+  --card-titulo: var(--cinza);
+  --card-texto: var(--branco);
+
+  --topo-fundo: var(--escuro);
+  --topo-link: var(--dourado-claro);
 }
  
  
@@ -70,7 +76,7 @@ img { max-width: 100%; height: auto; display: block; }
   padding: 0 8px;
   border: 0;
   border-radius: 4px;
-  background: var(--cinza);
+  background: var(--branco);
   color: var(--preto);
   font: inherit;
   font-size: 19.2px;
@@ -113,13 +119,13 @@ html[data-tema="dark"] .icone-sol { display: block; }
   background: transparent;
   color: var(--preto);
 }
-.btn--contorno:hover { background: var(--preto); color: var(--branco); }
+.btn--contorno:hover { background: var(--preto); color: var(--cinza); }
  
 
 html[data-tema="dark"] .btn--escuro {
-  background: var(--cinza);
+  background: var(--branco);
   color: var(--preto);
-  border-color: var(--cinza);
+  border-color: var(--branco);
 }
 html[data-tema="dark"] .btn--escuro:hover { background: var(--dourado); border-color: var(--dourado); }
 html[data-tema="dark"] .btn--contorno { border-color: var(--dourado); color: var(--dourado); }

@@ -1,0 +1,158 @@
+/* =====================================================================
+   topo.css — cabeçalho COMPARTILHADO das páginas logadas
+   AFETA: DASHBOARD (e, depois, agendamento, fale conosco e feedback).
+   A home só entra depois da migração: ela ainda usa o cabeçalho do index.css.
+   Prefixo: .topo__  |  Ordem no HTML: global.css → topo.css → css da página
+   Cores por token (global.css: --topo-fundo e --topo-link). Sem regras dark.
+   Fontes em px de propósito: o A+ não pode aumentar o cabeçalho.
+   ===================================================================== */
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 1 — Faixa do cabeçalho                      [AFETA: TODO O TOPO]
+   Mesmas regras do cabeçalho da home. --altura-topo mora aqui.
+   --------------------------------------------------------------------- */
+:root { --altura-topo: 100px; }
+ 
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  min-height: var(--altura-topo);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 8px 32px;
+  background: var(--topo-fundo);   /* [TOKEN] light --preto | dark --escuro */
+}
+ 
+.topo__logo img { height: 80px; width: auto; }
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 2 — Menu                                    [AFETA: TODO O TOPO]
+   [TOKEN] --topo-link. O hover usa --dourado direto (igual nos dois temas).
+   A página atual (aria-current="page") fica em --dourado-claro: [Suposição]
+   estilo tirado do desenho. O aria-current vem ANTES do hover: se o mouse
+   passar sobre ele, o hover (--dourado) vence por vir depois.
+   --------------------------------------------------------------------- */
+.topo__menu { display: flex; gap: 24px; }
+ 
+.topo__menu a {
+  color: var(--topo-link);
+  text-decoration: none;
+  font-size: 25.6px;
+}
+ 
+.topo__menu a[aria-current="page"] { color: var(--dourado-claro); }
+.topo__menu a:hover { color: var(--dourado); }
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 3 — Ações à direita (A-/A+/tema e usuário)
+   margin-left: auto empurra o grupo para a direita; depende de ser o
+   último item do cabeçalho. .btn-acess e os ícones estão no global.css.
+   --------------------------------------------------------------------- */
+.topo__acoes {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-left: auto;
+}
+ 
+.acessibilidade { display: flex; gap: 12px; }
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 4 — Bloco do usuário (<details> e <summary>)   [AFETA: TODO O TOPO]
+   O summary mostra o primeiro nome e uma seta; o botão de logout só
+   aparece quando o <details> está aberto. O CSS lê o atributo [open]:
+   quem fecha o menu (JS) tira o atributo, nunca usa classe.
+   --------------------------------------------------------------------- */
+.topo__usuario { position: relative; }
+ 
+.topo__usuario > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px;
+  border: 1px solid var(--dourado);
+  color: var(--dourado-claro);
+  font-size: 20.8px;
+  list-style: none;                       /* tira o triângulo padrão */
+  cursor: pointer;
+}
+.topo__usuario > summary::-webkit-details-marker { display: none; }   /* idem, no Safari */
+ 
+/* Seta: um "V" feito com duas bordas. Gira quando o menu abre. */
+.topo__usuario > summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+}
+.topo__usuario[open] > summary::after { transform: rotate(-135deg) translateY(-2px); }
+ 
+/* Nome longo: corta com reticências em vez de estourar o cabeçalho */
+.topo__nome {
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+ 
+/* Botão de logout: aparece abaixo do summary, sem empurrar o cabeçalho */
+.topo__logout {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 100%;
+  padding: 6px 16px;
+  border: 1px solid var(--dourado);
+  background: var(--topo-fundo);
+  color: var(--topo-link);
+  font: inherit;                          /* <button> não herda a fonte sozinho */
+  font-size: 20.8px;
+  cursor: pointer;
+}
+.topo__logout:hover { color: var(--dourado); }
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 5 — Tablet (até 900px)
+   --------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  :root { --altura-topo: 84px; }
+ 
+  .topo { padding: 8px 20px; gap: 8px 16px; }
+  .topo__logo img { height: 66px; }
+  .topo__menu { gap: 16px; }
+  .topo__acoes { gap: 16px; }
+  .topo__menu a { font-size: 20.8px; }
+}
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 6 — Celular (até 600px)
+   Modelo da home, em duas linhas. Em cima: logo, A-/A+/tema e usuário.
+   Embaixo, na largura toda: os três links.
+   --------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  :root { --altura-topo: 112px; }
+ 
+  .topo { padding: 8px 16px; gap: 6px 12px; }
+  .topo__logo img { height: 56px; }
+  .topo__menu { order: 3; width: 100%; justify-content: center; gap: 22px; }
+  .topo__acoes { gap: 10px; }
+  .acessibilidade { gap: 8px; }
+  .topo__menu a { font-size: 19.5px; }
+  .btn-acess { font-size: 18px; }
+ 
+  .topo__usuario > summary { padding: 6px 10px; font-size: 17px; }
+  .topo__nome { max-width: 7ch; }
+  .topo__logout { font-size: 17px; }
+}
+ 

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+ 
+<!--
+  CONTRATO PARA O JAVASCRIPT (js/script.js)
+  Tema, fonte e persistência: mesmo contrato das outras páginas (data-tema e --escala na
+  tag <html>, tema e escala no localStorage). Botões: #btn-menos, #btn-mais e #btn-tema.
+ 
+  PROTEÇÃO: sem sessão, redirecionar para login.html.
+  O login precisa GUARDAR QUEM ENTROU (o contrato do login hoje só diz "redirecionar").
+  Guardar o nome e o necessário para a sessão, nunca a senha.
+ 
+  NOME: vem do cadastro. Pegar o texto antes do primeiro espaço e preencher dois lugares:
+  - #usuario-nome  (cabeçalho). Texto de reserva: "Minha conta"
+  - #saudacao      (título). Texto de reserva: "Olá!"  ->  "Olá, [nome]!"
+ 
+  MENU DO USUÁRIO: <details class="topo__usuario">. Logout: botão #usuario-logout
+  (limpar a sessão e redirecionar). Para fechar o menu (clique fora ou Esc), REMOVER o
+  atributo "open" do <details>. Nunca usar classe: o CSS lê [open].
+ 
+  PRÓXIMO AGENDAMENTO: estado vazio #proximo-vazio (visível) e #proximo-dados (hidden).
+  Preencher #proximo-data, #proximo-barbeiro e #proximo-servico e alternar com o atributo
+  "hidden". O CSS não pode (e não deve) aplicar display nesses elementos.
+ 
+  HISTÓRICO: estado vazio #historico-vazio (visível) e #historico-tabela (hidden). Criar as
+  linhas dentro de #historico-corpo: cada <tr> com 4 <td>, na ordem Data, Serviço, Barbeiro,
+  Status (no celular, os rótulos vêm da posição da coluna). Limpar o #historico-corpo antes.
+ 
+  IDs acima: PROPOSTOS, confirmar com quem escreve o JS.
+  LINKS: agendamento.html e fale-conosco.html ainda não existem ("Cannot GET" até lá).
+  ATIVAR: descomentar a tag <script> no final do <body>.
+  VER O ESTADO PREENCHIDO SEM JS: apague o atributo "hidden" dos dois blocos e coloque
+  linhas no tbody (exemplo comentado no próprio tbody).
+-->
+ 
+<html lang="pt-BR" data-tema="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha conta — Rei Du Corte</title>
+  <!-- A ORDEM IMPORTA: global.css → topo.css (cabeçalho) → css da página -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/topo.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+ 
+  <header class="topo">
+    <a href="dashboard.html" class="topo__logo">
+      <img src="img/logobarbearia.png" alt="Rei Du Corte — ir para o início" width="217" height="217">
+    </a>
+    <nav class="topo__menu" aria-label="Menu principal">
+      <a href="dashboard.html" aria-current="page">Início</a>
+      <a href="agendamento.html">Agendar</a>
+      <a href="fale-conosco.html">Fale conosco</a>
+    </nav>
+    <div class="topo__acoes">
+      <div class="acessibilidade" role="group" aria-label="Acessibilidade">
+        <button type="button" id="btn-menos" class="btn-acess" aria-label="Diminuir fonte">A-</button>
+        <button type="button" id="btn-mais" class="btn-acess" aria-label="Aumentar fonte">A+</button>
+        <button type="button" id="btn-tema" class="btn-acess" aria-label="Alternar tema claro/escuro">
+          <svg class="icone-lua" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icone-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
+ 
+      <!-- Menu do usuário: o botão de logout só aparece com o <details> aberto -->
+      <details class="topo__usuario">
+        <summary><span class="topo__nome" id="usuario-nome">Minha conta</span></summary>
+        <button type="button" id="usuario-logout" class="topo__logout">Logout</button>
+      </details>
+    </div>
+  </header>
+ 
+  <main class="dashboard">
+    <section class="dashboard__saudacao">
+      <h1 id="saudacao">Olá!</h1>
+      <p>Aqui está o resumo da sua conta.</p>
+    </section>
+ 
+    <section class="dashboard__cartao" aria-labelledby="titulo-proximo">
+      <h2 id="titulo-proximo">Próximo agendamento:</h2>
+      <p id="proximo-vazio">Nenhum agendamento pendente</p>
+      <div id="proximo-dados" hidden>
+        <dl class="dashboard__dados">
+          <div><dt>Data:</dt><dd id="proximo-data"></dd></div>
+          <div><dt>Barbeiro:</dt><dd id="proximo-barbeiro"></dd></div>
+          <div><dt>Serviço:</dt><dd id="proximo-servico"></dd></div>
+        </dl>
+      </div>
+    </section>
+ 
+    <section class="dashboard__cartao" aria-labelledby="titulo-historico">
+      <h2 id="titulo-historico">Histórico recente:</h2>
+      <p id="historico-vazio">Nenhum atendimento ainda</p>
+      <div id="historico-tabela" hidden>
+        <table class="dashboard__tabela">
+          <thead>
+            <tr><th>Data</th><th>Serviço</th><th>Barbeiro</th><th>Status</th></tr>
+          </thead>
+          <tbody id="historico-corpo">
+            <!-- exemplo de linha (o JS cria as reais):
+            <tr><td>02/09</td><td>Corte</td><td>Lucas</td><td>Concluído</td></tr> -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+ 
+    <a href="agendamento.html" class="btn btn--escuro dashboard__novo">Novo agendamento</a>
+  </main>
+ 
+  <!-- <script src="js/script.js" defer></script> -->
+</body>
+</html>
+ 
