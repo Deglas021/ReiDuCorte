@@ -1,41 +1,143 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+ 
+<!--
+  CONTRATO PARA O JAVASCRIPT (js/script.js)
+  Tema, fonte e persistência: mesmo contrato do index.html e do login.html (data-tema e
+  --escala na tag <html>, tema e escala no localStorage, valendo para todas as páginas).
+  Botões: #btn-menos, #btn-mais e #btn-tema (mesmos ids das outras páginas).
+ 
+  FORMULÁRIO
+  - <form id="form-cadastro" method="post"> sem "action" de propósito (GET poria a senha na URL).
+  - Campos (ids): nome, cpf, telefone-fixo, celular, rua, numero, cep, bairro, cidade,
+    uf (<select> com as 27 siglas), senha, confirmar-senha. Botão "Registrar": type="submit".
+  - "required" em todos, EXCETO #telefone-fixo (hoje muita gente só tem celular).
+  - O HTML só traz "required", "type", "inputmode" e "autocomplete". Não há "pattern"
+    nem "maxlength": essas regras ficam com o JS.
+  - O JS deve: chamar preventDefault() no submit; aplicar máscaras (CPF, telefones, CEP);
+    validar os dígitos do CPF; conferir se #senha e #confirmar-senha são iguais;
+    enviar/guardar os dados e redirecionar (destino a definir; sugestão: login.html).
+  - ATENÇÃO: com "required", o navegador mostra o balão de erro dele antes do evento
+    submit chegar ao JS. Para controlar todas as mensagens, adicione "novalidate" no <form>.
+  - Este desenho não prevê um lugar para mensagens de erro: o JS precisa de um elemento
+    para isso (hoje não existe).
+  - Sem o JS, enviar o formulário dá "Cannot POST" no Live Server.
+ 
+  LINKS: logo -> index.html (o desenho não tem link de volta para o login)
+  ATIVAR: descomentar a tag <script> no final do <body>.
+-->
+ 
+<html lang="pt-BR" data-tema="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cadastro</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro — Rei Du Corte</title>
+  <!-- A ORDEM IMPORTA: global.css → acesso.css (layout comum) → css da página -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/acesso.css">
+  <link rel="stylesheet" href="css/cadastro.css">
 </head>
-<body>
-    <div>
-        <h1 class="texto-cadastro">Cadastro</h1>
-        <form action="" method="post">
-            <label for="nome-completo">Nome completo:</label>
-            <input type="text" id="Inome-completo" name="Inome-completo"/><br>
-            <label for="cpf">CPF:</label>
-            <input type="number" id="Icpf" name="cpf>
-            <label for="telefone-fixo" >Telefone fixo:</label>
-            <input type="number" id="Itelefone-fixo" name="telefone-fixo">
-            <label for="celular">Celular:</label>
-            <input type="number" name="celular" id="Icelular">
-        
-            <label for="rua">Rua:</label>
-            <input type="text" name="rua" id="Irua"/>
-            <label for="numero">Número:</label>
-            <input type="number" name="numero" id="Inumero">
-            <label for="cidade">Cidade:</label>
-            <input type="text" name="cidade" id="Icidade">
-            <label for="bairro">Bairro:</label>
-            <input type="text" name="bairro" id="Ibairro">
-            <label for="cep">CEP:</label>
-            <input type="number" name="cep" id="Icep">
-            <label for="uf">UF:</label>
-            <input type="text" name="uf" id="Iuf">
-            <label for="senha">Senha:</label>
-            <input type="password" name="senha" id="Isenha"/>
-            <label for="confirmar-senha">Confirmar senha:</label>
-            <input type="password" name="confirmar-senha" id="Iconfirmar-senha">
-            <button type="submit" id="bt-criar-cadastro">Criar cadastro</button>             
-        </form>
+<body class="acesso">
+ 
+  <!-- Painel/faixa esquerdo: só a logo, que volta para a home -->
+  <header class="acesso__lateral">
+    <a href="index.html" class="acesso__logo">
+      <img src="img/logobarbearia.png" alt="Rei Du Corte — ir para a página inicial" width="217" height="217">
+    </a>
+  </header>
+ 
+  <main class="acesso__principal">
+    <!-- Mesmo markup dos botões das outras páginas (ícones lua/sol alternam por CSS) -->
+    <div class="acesso__acessibilidade" role="group" aria-label="Acessibilidade">
+      <button type="button" id="btn-menos" class="btn-acess" aria-label="Diminuir fonte">A-</button>
+      <button type="button" id="btn-mais" class="btn-acess" aria-label="Aumentar fonte">A+</button>
+      <button type="button" id="btn-tema" class="btn-acess" aria-label="Alternar tema claro/escuro">
+        <svg class="icone-lua" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icone-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
     </div>
+ 
+    <section class="acesso__card">
+      <h1 class="acesso__titulo">Cadastro</h1>
+ 
+      <form id="form-cadastro" class="cadastro__form" method="post">
+ 
+        <div class="cadastro__item">
+          <label for="nome">Nome completo:</label>
+          <input type="text" id="nome" name="nome" autocomplete="name" required>
+        </div>
+ 
+        <div class="cadastro__item cadastro__item--largura-media">
+          <label for="cpf">CPF:</label>
+          <input type="text" id="cpf" name="cpf" inputmode="numeric" required>
+        </div>
+ 
+        <!-- Linha: Telefone fixo (opcional) + Celular. "nova-linha" no Telefone fixo deixa o CPF sozinho na linha de cima -->
+        <div class="cadastro__item cadastro__item--largura-media cadastro__item--nova-linha">
+          <label for="telefone-fixo">Telefone fixo:</label>
+          <input type="tel" id="telefone-fixo" name="telefone-fixo">
+        </div>
+        <div class="cadastro__item cadastro__item--largura-media">
+          <label for="celular">Celular:</label>
+          <input type="tel" id="celular" name="celular" autocomplete="tel" required>
+        </div>
+ 
+        <!-- Linha: Rua + Número -->
+        <div class="cadastro__item cadastro__item--largura-grande">
+          <label for="rua">Rua:</label>
+          <input type="text" id="rua" name="rua" autocomplete="address-line1" required>
+        </div>
+        <div class="cadastro__item cadastro__item--largura-pequena">
+          <label for="numero">Número:</label>
+          <input type="text" id="numero" name="numero" inputmode="numeric" required>
+        </div>
+ 
+        <!-- Linha: CEP + Bairro -->
+        <div class="cadastro__item cadastro__item--largura-media">
+          <label for="cep">CEP:</label>
+          <input type="text" id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" required>
+        </div>
+        <div class="cadastro__item cadastro__item--largura-media">
+          <label for="bairro">Bairro:</label>
+          <input type="text" id="bairro" name="bairro" required>
+        </div>
+ 
+        <!-- Linha: Cidade + UF -->
+        <div class="cadastro__item cadastro__item--largura-grande">
+          <label for="cidade">Cidade:</label>
+          <input type="text" id="cidade" name="cidade" autocomplete="address-level2" required>
+        </div>
+        <div class="cadastro__item cadastro__item--largura-pequena">
+          <label for="uf">UF:</label>
+          <select id="uf" name="uf" autocomplete="address-level1" required>
+            <option value="">Selecione</option>
+            <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+            <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+            <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+            <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+            <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+            <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+            <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+            <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+            <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+          </select>
+        </div>
+ 
+        <div class="cadastro__item">
+          <label for="senha">Senha:</label>
+          <input type="password" id="senha" name="senha" autocomplete="new-password" required>
+        </div>
+ 
+        <div class="cadastro__item">
+          <label for="confirmar-senha">Confirmar senha:</label>
+          <input type="password" id="confirmar-senha" name="confirmar-senha" autocomplete="new-password" required>
+        </div>
+ 
+        <button type="submit" class="btn btn--contorno cadastro__registrar">Registrar</button>
+      </form>
+    </section>
+  </main>
+ 
+  <!-- <script src="js/script.js" defer></script> -->
 </body>
 </html>
+ 

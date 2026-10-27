@@ -1,0 +1,37 @@
+/* =====================================================================
+   login.css — regras SÓ DO LOGIN
+   AFETA: SÓ LOGIN. Prefixo: .login__
+   O layout comum (painéis, card, título, rótulos, campos) está no acesso.css.
+   Este arquivo vem DEPOIS do acesso.css e do global.css, então as regras
+   daqui vencem quando a força é a mesma.
+   ===================================================================== */
+ 
+ 
+
+.login__titulo { text-align: center; }  
+ 
+
+.login__form label { margin-top: 18px; }
+.login__form > label:first-child { margin-top: 0; }
+ 
+ 
+.login__entrar {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  padding: 6px 0;     
+}
+ 
+
+.login__cadastro {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 6px 0;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--card-titulo);
+  text-decoration: underline;
+}
+ 
+.login__cadastro:hover { text-decoration: underline; }
+ 

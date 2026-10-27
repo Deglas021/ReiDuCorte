@@ -1,0 +1,58 @@
+/* =====================================================================
+   cadastro.css — regras SÓ DO CADASTRO
+   AFETA: SÓ CADASTRO. Prefixo: .cadastro__
+   O layout comum (painéis, card, título, rótulos, campos) está no acesso.css.
+   Este arquivo vem DEPOIS do acesso.css e do global.css.
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   PARTE 1 — Grade dos campos                      [AFETA: SÓ CADASTRO]
+   Grade de 6 colunas. Cada bloco rótulo+campo é um .cadastro__item e
+   escolhe quantas colunas ocupa (por padrão, as 6 = linha inteira).
+   Dois blocos que somam 6 ficam lado a lado (3+3 ou 4+2).
+   --------------------------------------------------------------------- */
+.cadastro__form {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 18px 16px;      /* 18px entre linhas, 16px entre colunas */
+}
+
+.cadastro__item {
+  grid-column: auto / span 6;   /* "auto / span N" = ocupa N colunas, no primeiro lugar livre */
+  min-width: 0;        /* sem isto, um campo largo estica a coluna e vaza do card */
+}
+
+/* Larguras (quantas das 6 colunas o bloco ocupa) */
+.cadastro__item--largura-grande  { grid-column: auto / span 4; }   /* 2/3 da linha */
+.cadastro__item--largura-media   { grid-column: auto / span 3; }   /* 1/2 da linha */
+.cadastro__item--largura-pequena { grid-column: auto / span 2; }   /* 1/3 da linha */
+
+/* Obriga o bloco a começar numa linha nova (na 1ª coluna). Usado no Telefone fixo,
+   para o CPF ficar sozinho na linha de cima. Só muda onde o bloco COMEÇA; a largura
+   continua vindo da classe de largura. Por isso as larguras acima usam "auto / span N":
+   com só "span N", o "grid-column-start: 1" abaixo reduziria o bloco a 1 coluna. */
+.cadastro__item--nova-linha { grid-column-start: 1; }
+
+
+/* ---------------------------------------------------------------------
+   PARTE 2 — Botão "Registrar"                     [AFETA: SÓ CADASTRO]
+   Usa .btn .btn--contorno do global. Pequeno e à esquerda, como no Figma.
+   --------------------------------------------------------------------- */
+.cadastro__registrar {
+  grid-column: 1 / -1;   /* ocupa a linha toda da grade... */
+  justify-self: start;   /* ...mas o botão só tem a largura do próprio texto */
+  margin-top: 12px;
+  padding: 6px 20px;     /* altura ~45px, igual à dos campos */
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 3 — Celular (até 600px)                   [AFETA: SÓ CADASTRO]
+   Todos os blocos passam a ocupar a linha inteira (coluna única).
+   --------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .cadastro__item--largura-grande,
+  .cadastro__item--largura-media,
+  .cadastro__item--largura-pequena { grid-column: auto / span 6; }
+}
