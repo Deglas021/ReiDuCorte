@@ -123,9 +123,9 @@ html[data-tema="dark"] .icone-sol { display: block; }
  
 
 html[data-tema="dark"] .btn--escuro {
-  background: var(--branco);
+  background: var(--cinza);
   color: var(--preto);
-  border-color: var(--branco);
+  border-color: var(--cinza);
 }
 html[data-tema="dark"] .btn--escuro:hover { background: var(--dourado); border-color: var(--dourado); }
 html[data-tema="dark"] .btn--contorno { border-color: var(--dourado); color: var(--dourado); }

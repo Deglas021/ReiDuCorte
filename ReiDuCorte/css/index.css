@@ -187,11 +187,17 @@ section[id] {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 0px;
   font-size: 1.15rem;
   line-height: 1.2;
   text-align: center;
   overflow: hidden;
+}
+
+.barbeiro__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
  
 .barbeiro h3 {
@@ -250,8 +256,6 @@ html[data-tema="dark"] .topo__menu a { color: var(--dourado-claro); }
 html[data-tema="dark"] .topo__menu a:hover { color: var(--dourado); }
 html[data-tema="dark"] .btn-login { background: var(--preto); color: var(--dourado-claro); }
 
-html[data-tema="dark"] .barbeiro__foto { color: var(--preto); }
- 
  
 @media (max-width: 900px) {
   :root { --altura-topo: 84px; }
