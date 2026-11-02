@@ -1,0 +1,139 @@
+/* =====================================================================
+   dashboard.css — regras SÓ DO DASHBOARD
+   AFETA: SÓ DASHBOARD. Prefixo: .dashboard__
+   O cabeçalho está no topo.css; paleta, tokens e botões, no global.css.
+   Sem regras dark: as cores vêm de tokens.
+   Tamanhos seguem a escala do projeto (o Figma foi só base): [Suposição]
+   AVISO: nunca coloque "display" em elementos que recebem o atributo hidden
+   (#proximo-dados, #historico-tabela): o display anularia o hidden.
+   Por isso o layout interno fica nos elementos de dentro (dl e table).
+   ===================================================================== */
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 1 — Página e saudação                      [AFETA: SÓ DASHBOARD]
+   --------------------------------------------------------------------- */
+.dashboard {
+  max-width: 70rem;     /* em rem: cresce junto com o A+ */
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+}
+ 
+/* O reset de margem não está no global (de propósito) */
+.dashboard h1,
+.dashboard h2,
+.dashboard p,
+.dashboard dl,
+.dashboard dd { margin: 0; }
+ 
+.dashboard__saudacao h1 {
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--titulo);      /* [TOKEN] light --preto | dark --branco */
+}
+ 
+.dashboard__saudacao p { font-size: 1.5rem; }   /* herda --texto do body */
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 2 — Cartões (Próximo agendamento e Histórico recente)
+   [TOKEN] os mesmos dos cards da home: --card-fundo, --card-titulo, --card-texto.
+   Borda --preto e canto de 6px, como os cards da home.
+   --------------------------------------------------------------------- */
+.dashboard__cartao {
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--card-fundo);
+  border: 1px solid var(--preto);
+  border-radius: 6px;
+  color: var(--card-texto);
+}
+ 
+.dashboard__cartao h2 {
+  margin-bottom: 12px;
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--card-titulo);
+}
+ 
+.dashboard__cartao p { font-size: 1.5rem; }    /* estados vazios */
+ 
+/* Lista "Data / Barbeiro / Serviço": cada linha é um rótulo + valor */
+.dashboard__dados { font-size: 1.5rem; }
+ 
+.dashboard__dados > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+  margin-top: 8px;
+}
+ 
+.dashboard__dados dt { min-width: 6.5rem; }   /* alinha os valores */
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 3 — Tabela do histórico                    [AFETA: SÓ DASHBOARD]
+   Linhas separadas por um fio de 1px (--preto, como as bordas dos cards).
+   --------------------------------------------------------------------- */
+.dashboard__tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.5rem;
+  text-align: left;
+}
+ 
+.dashboard__tabela th { font-weight: 400; }
+ 
+.dashboard__tabela th,
+.dashboard__tabela td { padding: 8px 16px 8px 0; }
+ 
+.dashboard__tabela tr + tr { border-top: 1px solid var(--preto); }
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 4 — Botão "Novo agendamento"
+   Usa .btn .btn--escuro do global (no dark: fundo cinza e texto preto).
+   --------------------------------------------------------------------- */
+.dashboard__novo { margin-top: 32px; }
+ 
+ 
+/* ---------------------------------------------------------------------
+   PARTE 5 — Celular (até 600px)                    [AFETA: SÓ DASHBOARD]
+   A tabela "empilha": cada linha vira um bloco, com o rótulo antes do valor.
+   Os rótulos vêm da POSIÇÃO da coluna (nth-child), sem depender do JS.
+   A linha de títulos (thead) some só visualmente, mas continua para
+   leitores de tela. [Suposição] Risco: mudar o display de tabela pode
+   fazer alguns leitores de tela perderem a semântica de tabela.
+   --------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .dashboard { padding: 24px 16px 48px; }
+  .dashboard__cartao { padding: 16px; }
+ 
+  .dashboard__tabela thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+ 
+  .dashboard__tabela,
+  .dashboard__tabela tbody,
+  .dashboard__tabela tr { display: block; }
+ 
+  .dashboard__tabela tr { padding: 8px 0; }
+ 
+  .dashboard__tabela td {
+    display: flex;
+    gap: 12px;
+    padding: 2px 0;
+  }
+ 
+  .dashboard__tabela td::before { min-width: 6.5rem; }
+  .dashboard__tabela td:nth-child(1)::before { content: "Data:"; }
+  .dashboard__tabela td:nth-child(2)::before { content: "Serviço:"; }
+  .dashboard__tabela td:nth-child(3)::before { content: "Barbeiro:"; }
+  .dashboard__tabela td:nth-child(4)::before { content: "Status:"; }
+}
+ 

@@ -113,7 +113,10 @@ section[id] {
   color: var(--dourado);
   font-size: 1.6rem;
   padding: 4px 6px;
-  border-radius: 4px;
+  border-radius: 8px;
+  border: 2px solid var(--dourado-claro);
+  ;   
+  
 }
  
 
@@ -180,15 +183,21 @@ section[id] {
   height: 110px;
   margin: 0 auto 18px;
   border-radius: 50%;
-  background: var(--cinza);
+  background: var(--branco);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 0px;
   font-size: 1.15rem;
   line-height: 1.2;
   text-align: center;
   overflow: hidden;
+}
+
+.barbeiro__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
  
 .barbeiro h3 {
@@ -207,7 +216,7 @@ section[id] {
  
 .contato {
   background: var(--escuro);
-  color: var(--cinza);             
+  color: var(--branco);             
   padding: 20px 60px 50px;
 }
  
@@ -247,8 +256,6 @@ html[data-tema="dark"] .topo__menu a { color: var(--dourado-claro); }
 html[data-tema="dark"] .topo__menu a:hover { color: var(--dourado); }
 html[data-tema="dark"] .btn-login { background: var(--preto); color: var(--dourado-claro); }
 
-html[data-tema="dark"] .barbeiro__foto { color: var(--preto); }
- 
  
 @media (max-width: 900px) {
   :root { --altura-topo: 84px; }
