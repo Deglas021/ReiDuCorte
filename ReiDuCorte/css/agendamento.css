@@ -1,0 +1,250 @@
+/* =====================================================================
+   agendamento.css — regras SÓ DA PÁGINA DE AGENDAMENTO
+   AFETA: SÓ AGENDAMENTO. Prefixo: .agendamento__
+   Cabeçalho: topo.css. Paleta, tokens e botões (.btn): global.css.
+   Sem tokens novos e sem regras dark: fundo, blocos e títulos usam os tokens
+   existentes; os controles escuros (campos, cartões, horários) usam --preto
+   direto, igual nos dois temas, como nas capturas.
+   Tamanhos pela escala do projeto (o Figma foi só base): [Suposição]
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   PARTE 1 — Página, título e utilitário                [AFETA: SÓ AGENDAMENTO]
+   --------------------------------------------------------------------- */
+.agendamento {
+  max-width: 70rem;     /* mesmo container do dashboard; em rem, cresce com o A+ */
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+}
+
+/* O reset de margem não está no global (de propósito) */
+.agendamento h1,
+.agendamento h2,
+.agendamento p,
+.agendamento dl,
+.agendamento dd { margin: 0; }   /* fieldset NÃO entra aqui: a margem dele é definida nas classes abaixo */
+
+.agendamento__intro h1 {
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--titulo);       /* [TOKEN] light --preto | dark --branco */
+}
+.agendamento__intro p { font-size: 1.5rem; }   /* herda --texto do body */
+
+/* Texto só para leitores de tela (rótulos que o desenho não mostra) */
+.agendamento__oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 2 — Blocos (Serviço, Barbeiro, Data e horário, Resumo)
+   [TOKEN] --card-fundo, --card-titulo, --card-texto: os mesmos dos cards da home.
+   --------------------------------------------------------------------- */
+.agendamento__bloco {
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--card-fundo);
+  border: 1px solid var(--preto);
+  border-radius: 6px;
+  color: var(--card-texto);
+}
+
+.agendamento__bloco h2 {
+  margin-bottom: 16px;
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--card-titulo);
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 3 — Campos (select e data) e extras
+   Fundo --preto e texto --branco nos dois temas. "color-scheme: dark" faz o
+   navegador desenhar a seta e o calendário em cores claras sobre o fundo escuro.
+   --------------------------------------------------------------------- */
+.agendamento__bloco select,
+.agendamento__bloco input[type="date"] {
+  display: block;
+  width: 100%;
+  height: 2.75rem;     /* ~44px: alvo de toque recomendado */
+  padding: 0 12px;
+  font: inherit;       /* <select> e <input> não herdam a fonte sozinhos */
+  font-size: 1.25rem;  /* >=16px evita o zoom automático do iOS */
+  color: var(--branco);
+  background: var(--preto);
+  border: 1px solid var(--preto);
+  border-radius: 6px;
+  color-scheme: dark;
+}
+
+/* Extras: 2 linhas, preenchendo por coluna (Pigmentação e Sobrancelha | Nevou) */
+.agendamento__extras {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  justify-content: start;
+  gap: 8px 48px;
+  margin: 16px 0 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.agendamento__extras div { display: flex; align-items: center; gap: 12px; }
+
+.agendamento__extras input {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--dourado);
+}
+
+.agendamento__extras label { font-size: 1.25rem; }
+.agendamento__preco { margin-left: 12px; }
+
+
+/* ---------------------------------------------------------------------
+   PARTE 4 — Opções selecionáveis (barbeiros e horários)
+   Os <input type="radio"> ficam escondidos e o <label> ao lado vira o cartão.
+   O estado vem do próprio radio: ":checked" (escolhido) e ":disabled" (ocupado).
+   Quem desabilita ou desmarca é o JS, pelos atributos, nunca por classe.
+   --------------------------------------------------------------------- */
+.agendamento__radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* O foco do teclado aparece no cartão (o radio está escondido) */
+.agendamento__radio:focus-visible + label {
+  outline: 3px solid var(--dourado);
+  outline-offset: 3px;
+}
+
+/* Barbeiros */
+.agendamento__barbeiros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 14rem));   /* [Suposição] 3 em linha no desktop */
+  gap: 16px;
+}
+
+.agendamento__barbeiro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: var(--preto);
+  color: var(--branco);
+  border: 1px solid var(--preto);
+  border-radius: 6px;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.agendamento__radio:checked + .agendamento__barbeiro { border-color: var(--dourado); }
+
+/* Foto do barbeiro em círculo. O recorte quadrado (400x400) já vem pronto em img/.
+   object-fit: cover preenche o círculo; o fundo dourado só aparece se a foto falhar. */
+.agendamento__foto {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--dourado-claro);
+}
+
+/* Horários: grade de 3 colunas x 4 linhas */
+.agendamento__horarios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 16px 0 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.agendamento__horario {
+  display: block;
+  padding: 8px 0;
+  text-align: center;
+  background: var(--preto);
+  color: var(--branco);
+  border: 1px solid var(--preto);
+  border-radius: 6px;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.agendamento__radio:not(:disabled) + .agendamento__horario:hover { border-color: var(--dourado); }
+
+/* Escolhido: fundo dourado e texto escuro [Suposição] */
+.agendamento__radio:checked + .agendamento__horario {
+  background: var(--dourado);
+  color: var(--preto);
+  border-color: var(--dourado);
+}
+
+/* Ocupado: apagado e riscado (a cor sozinha não basta para quem não enxerga cores) */
+.agendamento__radio:disabled + .agendamento__horario {
+  opacity: 0.4;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 5 — Resumo e botão de confirmar
+   O botão usa .btn .btn--escuro do global (troca de cor por tema já resolvida lá).
+   --------------------------------------------------------------------- */
+.agendamento__resumo { font-size: 1.5rem; }
+
+.agendamento__resumo > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.agendamento__resumo dd { text-align: right; }
+
+/* Linha acima do total, na cor do texto (aparece nos dois temas) */
+.agendamento__total {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--card-texto);
+}
+
+.agendamento__confirmar {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  padding: 6px 20px;    /* altura ~45px, igual à dos campos */
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 6 — Tablet e celular
+   --------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .agendamento { padding: 32px 20px 48px; }
+}
+
+@media (max-width: 600px) {
+  .agendamento { padding: 24px 16px 48px; }
+  .agendamento__bloco { padding: 16px; }
+
+  /* Extras em coluna única */
+  .agendamento__extras { grid-auto-flow: row; grid-template-rows: none; }
+
+  .agendamento__horarios { gap: 8px; }   /* continua 3 colunas, como no desenho */
+}

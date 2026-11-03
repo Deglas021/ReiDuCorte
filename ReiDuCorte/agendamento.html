@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<!--
+  CONTRATO PARA O JAVASCRIPT (js/script.js)
+  Tema, fonte e persistência: mesmo contrato das outras páginas (data-tema e --escala na
+  tag <html>, tema e escala no localStorage). Botões: #btn-menos, #btn-mais e #btn-tema.
+  PROTEÇÃO: sem sessão, redirecionar para login.html.
+  CABEÇALHO: mesmo contrato do dashboard (#usuario-nome, #usuario-logout; fechar o menu
+  removendo o atributo "open" do <details>). IDs PROPOSTOS: confirmar com o colega.
+
+  FORMULÁRIO <form id="form-agendamento" method="post"> (sem "action" de propósito)
+  - Serviço ou combo: <select id="servico">. Cada <option> tem data-nome e data-preco.
+  - Extras (opcionais): checkboxes name="extras" (#extra-pigmentacao, #extra-sobrancelha,
+    #extra-nevou), com data-nome e data-preco.
+  - Barbeiro: radios name="barbeiro" (value: marcos, lucas, diego).
+  - Data: <input type="date" id="data">. O "min" (hoje) só o JS consegue colocar. O contato
+    do site diz "Seg a Sáb": domingos ficam por conta do JS.
+  - Horário: 12 radios name="horario" (value "09:00", "10:00"... ) numa grade de 3x4.
+  - RESUMO: #resumo-servico (reserva "—"), #resumo-extras (reserva "Nenhum") e #resumo-total
+    (reserva "R$ 0", com aria-live). Total = preço do serviço/combo + preço de cada extra.
+
+  DISPONIBILIDADE: ao mudar o barbeiro ou a data, atualizar os horários (ocupados com o
+  atributo "disabled") e DESMARCAR o horário escolhido. Sugestão: deixar todos desabilitados
+  até haver barbeiro e data. No HTML, todos nascem habilitados.
+
+  CONFIRMAR: validar serviço, barbeiro, data e horário (extras são opcionais); conferir de
+  novo a disponibilidade; salvar no localStorage associado à conta conectada ANTES de
+  redirecionar para dashboard.html. Chave e formato do registro: a combinar com o colega.
+  ATENÇÃO: com "required", o navegador mostra o balão dele antes do submit chegar ao JS
+  (adicione "novalidate" no <form> para controlar as mensagens). O desenho não prevê um
+  lugar para mensagens de erro. Limite: dados e disponibilidade existem só naquele navegador.
+  ATIVAR: descomentar a tag <script> no final do <body>.
+-->
+
+<html lang="pt-BR" data-tema="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novo agendamento — Rei Du Corte</title>
+  <!-- A ORDEM IMPORTA: global.css → topo.css (cabeçalho) → css da página -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/topo.css">
+  <link rel="stylesheet" href="css/agendamento.css">
+</head>
+<body>
+
+  <header class="topo">
+    <a href="dashboard.html" class="topo__logo">
+      <img src="img/logobarbearia.png" alt="Rei Du Corte — ir para o início" width="217" height="217">
+    </a>
+    <nav class="topo__menu" aria-label="Menu principal">
+      <a href="dashboard.html">Início</a>
+      <a href="agendamento.html" aria-current="page">Agendar</a>
+      <a href="fale-conosco.html">Fale conosco</a>
+    </nav>
+    <div class="topo__acoes">
+      <div class="acessibilidade" role="group" aria-label="Acessibilidade">
+        <button type="button" id="btn-menos" class="btn-acess" aria-label="Diminuir fonte">A-</button>
+        <button type="button" id="btn-mais" class="btn-acess" aria-label="Aumentar fonte">A+</button>
+        <button type="button" id="btn-tema" class="btn-acess" aria-label="Alternar tema claro/escuro">
+          <svg class="icone-lua" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icone-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
+      <details class="topo__usuario">
+        <summary><span class="topo__nome" id="usuario-nome">Minha conta</span></summary>
+        <button type="button" id="usuario-logout" class="topo__logout">Logout</button>
+      </details>
+    </div>
+  </header>
+
+  <main class="agendamento">
+    <section class="agendamento__intro">
+      <h1>Novo agendamento</h1>
+      <p>Escolha o serviço, barbeiro e horário.</p>
+    </section>
+
+    <form id="form-agendamento" method="post">
+
+      <!-- 1. Serviço e extras -->
+      <section class="agendamento__bloco" aria-labelledby="titulo-servico">
+        <h2 id="titulo-servico">Escolha o serviço</h2>
+        <select id="servico" name="servico" aria-labelledby="titulo-servico" required>
+          <option value="">Selecione o serviço</option>
+          <optgroup label="Serviços">
+            <option value="corte-simples" data-nome="Corte simples" data-preco="30">Corte simples — R$ 30</option>
+            <option value="corte-disfarcado" data-nome="Corte disfarçado" data-preco="40">Corte disfarçado — R$ 40</option>
+            <option value="corte-simples-infantil" data-nome="Corte simples infantil" data-preco="25">Corte simples infantil — R$ 25</option>
+            <option value="corte-disfarcado-infantil" data-nome="Corte disfarçado infantil" data-preco="35">Corte disfarçado infantil — R$ 35</option>
+            <option value="barba" data-nome="Barba" data-preco="20">Barba — R$ 20</option>
+          </optgroup>
+          <optgroup label="Combos">
+            <option value="combo-corte-simples-barba" data-nome="Combo: corte simples + barba" data-preco="45">Combo: corte simples + barba — R$ 45</option>
+            <option value="combo-corte-disfarcado-barba" data-nome="Combo: corte disfarçado + barba" data-preco="55">Combo: corte disfarçado + barba — R$ 55</option>
+            <option value="combo-corte-simples-infantil" data-nome="Combo: corte simples + infantil" data-preco="50">Combo: corte simples + infantil — R$ 50</option>
+            <option value="combo-corte-disfarcado-infantil" data-nome="Combo: corte disfarçado + infantil" data-preco="60">Combo: corte disfarçado + infantil — R$ 60</option>
+          </optgroup>
+        </select>
+
+        <fieldset class="agendamento__extras">
+          <legend class="agendamento__oculto">Extras (opcionais)</legend>
+          <div>
+            <input type="checkbox" id="extra-pigmentacao" name="extras" value="pigmentacao" data-nome="Pigmentação" data-preco="15">
+            <label for="extra-pigmentacao">Pigmentação <span class="agendamento__preco">R$ 15</span></label>
+          </div>
+          <div>
+            <input type="checkbox" id="extra-sobrancelha" name="extras" value="sobrancelha" data-nome="Sobrancelha" data-preco="10">
+            <label for="extra-sobrancelha">Sobrancelha <span class="agendamento__preco">R$ 10</span></label>
+          </div>
+          <div>
+            <input type="checkbox" id="extra-nevou" name="extras" value="nevou" data-nome="Nevou" data-preco="30">
+            <label for="extra-nevou">Nevou <span class="agendamento__preco">R$ 30</span></label>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- 2. Barbeiro (radios escondidos; o <label> é o cartão) -->
+      <section class="agendamento__bloco" aria-labelledby="titulo-barbeiro">
+        <h2 id="titulo-barbeiro">Barbeiro</h2>
+        <div class="agendamento__barbeiros" role="radiogroup" aria-labelledby="titulo-barbeiro">
+          <input type="radio" id="barbeiro-marcos" name="barbeiro" value="marcos" class="agendamento__radio" required>
+          <label for="barbeiro-marcos" class="agendamento__barbeiro"><img class="agendamento__foto" src="img/marcos-agend.jpg" alt="" width="64" height="64">Marcos</label>
+          <input type="radio" id="barbeiro-lucas" name="barbeiro" value="lucas" class="agendamento__radio">
+          <label for="barbeiro-lucas" class="agendamento__barbeiro"><img class="agendamento__foto" src="img/lucas-agend.jpg" alt="" width="64" height="64">Lucas</label>
+          <input type="radio" id="barbeiro-diego" name="barbeiro" value="diego" class="agendamento__radio">
+          <label for="barbeiro-diego" class="agendamento__barbeiro"><img class="agendamento__foto" src="img/diego-agend.jpg" alt="" width="64" height="64">Diego</label>
+        </div>
+      </section>
+
+      <!-- 3. Data e horário -->
+      <section class="agendamento__bloco" aria-labelledby="titulo-data">
+        <h2 id="titulo-data">Data e horário</h2>
+        <label for="data" class="agendamento__oculto">Data</label>
+        <input type="date" id="data" name="data" required>
+
+        <fieldset class="agendamento__horarios">
+          <legend class="agendamento__oculto">Horário</legend>
+          <input type="radio" id="h0900" name="horario" value="09:00" class="agendamento__radio" required><label for="h0900" class="agendamento__horario">9h00</label>
+          <input type="radio" id="h1000" name="horario" value="10:00" class="agendamento__radio"><label for="h1000" class="agendamento__horario">10h00</label>
+          <input type="radio" id="h1040" name="horario" value="10:40" class="agendamento__radio"><label for="h1040" class="agendamento__horario">10h40</label>
+          <input type="radio" id="h1120" name="horario" value="11:20" class="agendamento__radio"><label for="h1120" class="agendamento__horario">11h20</label>
+          <input type="radio" id="h1320" name="horario" value="13:20" class="agendamento__radio"><label for="h1320" class="agendamento__horario">13h20</label>
+          <input type="radio" id="h1410" name="horario" value="14:10" class="agendamento__radio"><label for="h1410" class="agendamento__horario">14h10</label>
+          <input type="radio" id="h1500" name="horario" value="15:00" class="agendamento__radio"><label for="h1500" class="agendamento__horario">15h00</label>
+          <input type="radio" id="h1540" name="horario" value="15:40" class="agendamento__radio"><label for="h1540" class="agendamento__horario">15h40</label>
+          <input type="radio" id="h1620" name="horario" value="16:20" class="agendamento__radio"><label for="h1620" class="agendamento__horario">16h20</label>
+          <input type="radio" id="h1700" name="horario" value="17:00" class="agendamento__radio"><label for="h1700" class="agendamento__horario">17h00</label>
+          <input type="radio" id="h1740" name="horario" value="17:40" class="agendamento__radio"><label for="h1740" class="agendamento__horario">17h40</label>
+          <input type="radio" id="h1820" name="horario" value="18:20" class="agendamento__radio"><label for="h1820" class="agendamento__horario">18h20</label>
+        </fieldset>
+      </section>
+
+      <!-- 4. Resumo e confirmação -->
+      <section class="agendamento__bloco" aria-labelledby="titulo-resumo">
+        <h2 id="titulo-resumo">Resumo</h2>
+        <dl class="agendamento__resumo">
+          <div><dt>Serviço:</dt><dd id="resumo-servico">—</dd></div>
+          <div><dt>Extras:</dt><dd id="resumo-extras">Nenhum</dd></div>
+          <div class="agendamento__total"><dt>Total</dt><dd id="resumo-total" aria-live="polite">R$ 0</dd></div>
+        </dl>
+        <button type="submit" class="btn btn--escuro agendamento__confirmar">Confirmar agendamento</button>
+      </section>
+
+    </form>
+  </main>
+
+  <!-- <script src="js/script.js" defer></script> -->
+</body>
+</html>
