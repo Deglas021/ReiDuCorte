@@ -1,0 +1,173 @@
+/* =====================================================================
+   fale-conosco.css — regras SÓ DA PÁGINA FALE CONOSCO
+   AFETA: SÓ FALE CONOSCO. Prefixo: .fale-conosco__
+   Cabeçalho: topo.css. Paleta, tokens e botões (.btn): global.css.
+   Sem tokens novos e sem regras dark: blocos e títulos usam os tokens existentes;
+   os campos escuros (select e textarea) usam --preto direto, iguais nos dois temas.
+   Tamanhos pela escala do projeto (o Figma foi só base): [Suposição]
+   ===================================================================== */
+   
+
+/* ---------------------------------------------------------------------
+   PARTE 2 — Página, título e blocos
+   [TOKEN] --titulo, --card-fundo, --card-titulo e --card-texto, como nas outras páginas.
+   --------------------------------------------------------------------- */
+.fale-conosco {
+  max-width: 70rem;     /* mesmo container do dashboard e do agendamento */
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+}
+
+/* O reset de margem não está no global (de propósito). Fieldset NÃO entra aqui:
+   a margem dele é definida na classe .fale-conosco__grupo. */
+.fale-conosco h1,
+.fale-conosco h2,
+.fale-conosco p { margin: 0; }
+
+.fale-conosco__intro h1 {
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--titulo);       /* light --preto | dark --branco */
+}
+.fale-conosco__intro p { font-size: 1.5rem; }   /* herda --texto do body */
+
+.fale-conosco__bloco {
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--card-fundo);
+  border: 1px solid var(--preto);
+  border-radius: 6px;
+  color: var(--card-texto);
+}
+
+.fale-conosco__bloco h2 {
+  margin-bottom: 8px;
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--card-titulo);
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 3 — Perguntas e opções (radios e caixas de seleção)
+   Controles nativos com accent-color dourado: mostram o marcado com um desenho
+   (bolinha ou "v"), então a seleção não depende só da cor. O foco usa o contorno
+   dourado do global (:focus-visible).
+   --------------------------------------------------------------------- */
+.fale-conosco__grupo {
+  margin: 16px 0 0;     /* margem completa aqui, porque fieldset tem margem própria */
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+/* Serve a <legend> e a <label> das perguntas */
+.fale-conosco__pergunta {
+  display: block;
+  padding: 0;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  color: var(--card-titulo);
+}
+.fale-conosco__pergunta--espaco { margin-top: 24px; }
+
+.fale-conosco__opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+}
+.fale-conosco__opcoes--coluna {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.fale-conosco__opcao { display: flex; align-items: center; gap: 12px; }
+
+.fale-conosco__opcao input {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--dourado);
+}
+
+.fale-conosco__opcao label { font-size: 1.25rem; cursor: pointer; }
+
+
+/* ---------------------------------------------------------------------
+   PARTE 4 — Controle de satisfação (0 a 10)
+   accent-color pinta a parte percorrida e o botão de dourado (Chromium e Firefox).
+   O valor atual aparece no <output> abaixo, atualizado pelo JS.
+   --------------------------------------------------------------------- */
+.fale-conosco input[type="range"] {
+  display: block;
+  width: 100%;
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--dourado);
+  cursor: pointer;
+}
+
+.fale-conosco__escala {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.25rem;
+}
+
+.fale-conosco__nota { margin-top: 8px; font-size: 1.5rem; }
+
+
+/* ---------------------------------------------------------------------
+   PARTE 5 — Assunto, mensagem e botão
+   Campos --preto com texto --branco nos dois temas, como nas capturas.
+   "color-scheme: dark" faz o navegador desenhar a seta e a barra de rolagem
+   em cores claras sobre o fundo escuro.
+   --------------------------------------------------------------------- */
+.fale-conosco__bloco select,
+.fale-conosco__bloco textarea {
+  display: block;
+  width: 100%;
+  padding: 0 12px;
+  font: inherit;       /* <select> e <textarea> não herdam a fonte sozinhos */
+  font-size: 1.25rem;  /* >=16px evita o zoom automático do iOS */
+  color: var(--branco);
+  background: var(--preto);
+  border: 1px solid var(--preto);
+  border-radius: 6px;
+  color-scheme: dark;
+}
+
+.fale-conosco__bloco select { height: 2.75rem; }   /* ~44px: alvo de toque */
+
+.fale-conosco__bloco textarea {
+  min-height: 8rem;
+  padding: 12px;
+  resize: vertical;    /* só estica para baixo: não passa do cartão */
+}
+
+.fale-conosco__bloco textarea::placeholder { color: var(--cinza); opacity: 0.7; }
+
+/* Usa .btn .btn--escuro do global (troca de cor por tema já resolvida lá) */
+.fale-conosco__enviar {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  padding: 6px 20px;   /* altura ~45px, igual à dos campos */
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 6 — Tablet e celular
+   Os cartões já são uma coluna só: aqui só os espaçamentos.
+   --------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .fale-conosco { padding: 32px 20px 48px; }
+}
+
+@media (max-width: 600px) {
+  .fale-conosco { padding: 24px 16px 48px; }
+  .fale-conosco__bloco { padding: 16px; }
+  .fale-conosco__opcoes { gap: 12px 24px; }
+}

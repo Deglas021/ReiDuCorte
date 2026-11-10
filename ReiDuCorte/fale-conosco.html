@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<!--
+  CONTRATO PARA O JAVASCRIPT (js/script.js)
+  Tema, fonte e persistência: mesmo contrato das outras páginas (data-tema e --escala na
+  tag <html>, tema e escala no localStorage). Botões: #btn-menos, #btn-mais e #btn-tema.
+  PROTEÇÃO: sem sessão, redirecionar para login.html.
+  CABEÇALHO: mesmo contrato do dashboard (#usuario-nome, #usuario-logout; fechar o menu
+  removendo o atributo "open" do <details>). IDs PROPOSTOS: confirmar com o colega.
+
+  FORMULÁRIO <form id="form-fale-conosco" method="post"> (sem "action" de propósito)
+  - Recomendação: radios name="recomendacao" (value: sim, talvez, nao). Nascem sem seleção.
+  - Satisfação: <input type="range" id="satisfacao" min="0" max="10" step="1" value="0">.
+    ATENÇÃO: um slider NUNCA fica vazio. Quem não mexeu nele envia 0, que parece a pior nota.
+    Para saber se a pessoa respondeu, o JS precisa marcar o primeiro uso (evento "input").
+  - Nota visível: <output id="satisfacao-valor">. Só o JS o atualiza (sem JS ele fica em 0).
+  - Serviços: checkboxes name="servicos" (value: corte, barba, combos, extras). Nascem vazios.
+  - Assunto: <select id="assunto"> (value: elogio, sugestao, reclamacao, outro). Começa em
+    "Selecione o assunto" (value vazio).
+  - Mensagem: <textarea id="mensagem" name="mensagem">.
+  - Nenhum campo tem "required": se recomendação, assunto e mensagem são obrigatórios é uma
+    decisão a combinar com o colega. Validação e mensagens de erro são do JS (o desenho não
+    prevê lugar para elas).
+
+  AO ENVIAR (JS): 1) validar; 2) guardar no localStorage ANTES de navegar: recomendação, nota,
+  serviços selecionados, assunto e mensagem (ligados à conta conectada, pelo identificador de
+  sessão do colega); 3) redirecionar para a página de confirmação do feedback. O destino (nome
+  e URL) AINDA NÃO FOI DEFINIDO: será combinado quando essa página for criada. Ela lerá e
+  exibirá o feedback salvo. Chave e formato do registro: a combinar. Limite: tudo local, sem
+  backend.
+  ATIVAR: descomentar a tag <script> no final do <body>.
+-->
+
+<html lang="pt-BR" data-tema="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fale conosco — Rei Du Corte</title>
+  
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/topo.css">
+  <link rel="stylesheet" href="css/fale-conosco.css">
+</head>
+<body>
+
+  <header class="topo">
+    <a href="dashboard.html" class="topo__logo">
+      <img src="img/logobarbearia.png" alt="Rei Du Corte — ir para o início" width="217" height="217">
+    </a>
+    <nav class="topo__menu" aria-label="Menu principal">
+      <a href="dashboard.html">Início</a>
+      <a href="agendamento.html">Agendar</a>
+      <a href="fale-conosco.html" aria-current="page">Fale conosco</a>
+    </nav>
+    <div class="topo__acoes">
+      <div class="acessibilidade" role="group" aria-label="Acessibilidade">
+        <button type="button" id="btn-menos" class="btn-acess" aria-label="Diminuir fonte">A-</button>
+        <button type="button" id="btn-mais" class="btn-acess" aria-label="Aumentar fonte">A+</button>
+        <button type="button" id="btn-tema" class="btn-acess" aria-label="Alternar tema claro/escuro">
+          <svg class="icone-lua" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icone-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
+      <details class="topo__usuario">
+        <summary><span class="topo__nome" id="usuario-nome">Minha conta</span></summary>
+        <button type="button" id="usuario-logout" class="topo__logout">Logout</button>
+      </details>
+    </div>
+  </header>
+
+  <main class="fale-conosco">
+    <section class="fale-conosco__intro">
+      <h1>Fale conosco</h1>
+      <p>Sua opinião ajuda a melhorar a Rei Du Corte</p>
+    </section>
+
+    <form id="form-fale-conosco" method="post">
+
+      <!-- 1. Experiência -->
+      <section class="fale-conosco__bloco" aria-labelledby="titulo-experiencia">
+        <h2 id="titulo-experiencia">Sobre sua experiência</h2>
+
+        <fieldset class="fale-conosco__grupo">
+          <legend class="fale-conosco__pergunta">Você recomendaria a Rei Du Corte a um amigo?</legend>
+          <div class="fale-conosco__opcoes">
+            <div class="fale-conosco__opcao"><input type="radio" id="recomenda-sim" name="recomendacao" value="sim"><label for="recomenda-sim">Sim</label></div>
+            <div class="fale-conosco__opcao"><input type="radio" id="recomenda-talvez" name="recomendacao" value="talvez"><label for="recomenda-talvez">Talvez</label></div>
+            <div class="fale-conosco__opcao"><input type="radio" id="recomenda-nao" name="recomendacao" value="nao"><label for="recomenda-nao">Não</label></div>
+          </div>
+        </fieldset>
+
+        <div class="fale-conosco__grupo">
+          <label for="satisfacao" class="fale-conosco__pergunta">Nível de satisfação com o atendimento</label>
+          <input type="range" id="satisfacao" name="satisfacao" min="0" max="10" step="1" value="0">
+          <div class="fale-conosco__escala" aria-hidden="true"><span>0</span><span>10</span></div>
+          <p class="fale-conosco__nota">Nota: <output id="satisfacao-valor" for="satisfacao">0</output></p>
+        </div>
+      </section>
+
+      <!-- 2. Serviços -->
+      <section class="fale-conosco__bloco" aria-labelledby="titulo-servicos">
+        <h2 id="titulo-servicos">Serviços que você já utilizou</h2>
+        <div class="fale-conosco__opcoes fale-conosco__opcoes--coluna" role="group" aria-labelledby="titulo-servicos">
+          <div class="fale-conosco__opcao"><input type="checkbox" id="servico-corte" name="servicos" value="corte"><label for="servico-corte">Corte</label></div>
+          <div class="fale-conosco__opcao"><input type="checkbox" id="servico-barba" name="servicos" value="barba"><label for="servico-barba">Barba</label></div>
+          <div class="fale-conosco__opcao"><input type="checkbox" id="servico-combos" name="servicos" value="combos"><label for="servico-combos">Combos</label></div>
+          <div class="fale-conosco__opcao"><input type="checkbox" id="servico-extras" name="servicos" value="extras"><label for="servico-extras">Extras</label></div>
+        </div>
+      </section>
+
+      <!-- 3. Mensagem -->
+      <section class="fale-conosco__bloco" aria-labelledby="titulo-mensagem">
+        <h2 id="titulo-mensagem">Sua mensagem</h2>
+
+        <label for="assunto" class="fale-conosco__pergunta">Assunto</label>
+        <select id="assunto" name="assunto">
+          <option value="">Selecione o assunto</option>
+          <option value="elogio">Elogio</option>
+          <option value="sugestao">Sugestão</option>
+          <option value="reclamacao">Reclamação</option>
+          <option value="outro">Outro</option>
+        </select>
+
+        <label for="mensagem" class="fale-conosco__pergunta fale-conosco__pergunta--espaco">Conte com mais detalhes</label>
+        <textarea id="mensagem" name="mensagem" rows="6" placeholder="Escreva aqui sua mensagem"></textarea>
+
+        <button type="submit" class="btn btn--escuro fale-conosco__enviar">Enviar feedback</button>
+      </section>
+
+    </form>
+  </main>
+
+  <!-- <script src="js/script.js" defer></script> -->
+</body>
+</html>
