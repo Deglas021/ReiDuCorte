@@ -5,23 +5,24 @@
    Este arquivo vem DEPOIS do acesso.css e do global.css, então as regras
    daqui vencem quando a força é a mesma.
    ===================================================================== */
- 
- 
 
-.login__titulo { text-align: center; }  
- 
+.login__titulo {
+  text-align: center;
+}
 
-.login__form label { margin-top: 18px; }
-.login__form > label:first-child { margin-top: 0; }
- 
- 
+.login__form label {
+  margin-top: 18px;
+}
+.login__form > label:first-child {
+  margin-top: 0;
+}
+
 .login__entrar {
   display: block;
   width: 100%;
   margin-top: 24px;
-  padding: 6px 0;     
+  padding: 6px 0;
 }
- 
 
 .login__cadastro {
   display: inline-block;
@@ -32,6 +33,13 @@
   color: var(--card-titulo);
   text-decoration: underline;
 }
- 
-.login__cadastro:hover { text-decoration: underline; }
- 
+
+.login__erro {
+  margin: 16px 0 0;
+  color: #ff6b6b;
+  font-size: 1.25rem;
+}
+
+.login__cadastro:hover {
+  text-decoration: underline;
+}
