@@ -56,3 +56,11 @@
   .cadastro__item--largura-media,
   .cadastro__item--largura-pequena { grid-column: auto / span 6; }
 }
+
+/* Mensagem de erro do formulário */
+.cadastro__erro {
+  grid-column: 1 / -1;   /* ocupa a linha toda da grade */
+  margin: 0;
+  color: #ff6b6b;
+  font-size: 1.25rem;
+}

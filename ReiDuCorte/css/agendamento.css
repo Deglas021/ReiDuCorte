@@ -66,12 +66,11 @@
 
 
 /* ---------------------------------------------------------------------
-   PARTE 3 — Campos (select e data) e extras
+   PARTE 3 — Campos (selects) e extras
    Fundo --preto e texto --branco nos dois temas. "color-scheme: dark" faz o
-   navegador desenhar a seta e o calendário em cores claras sobre o fundo escuro.
+   navegador desenhar a seta em cor clara sobre o fundo escuro.
    --------------------------------------------------------------------- */
-.agendamento__bloco select,
-.agendamento__bloco input[type="date"] {
+.agendamento__bloco select {
   display: block;
   width: 100%;
   height: 2.75rem;     /* ~44px: alvo de toque recomendado */
@@ -83,6 +82,21 @@
   border: 1px solid var(--preto);
   border-radius: 6px;
   color-scheme: dark;
+}
+
+/* Dia e mês lado a lado; sem espaço, o segundo desce, sem passar do cartão.
+   O estilo dos campos é o da regra acima (nada duplicado). Os <label> ficam
+   escondidos (.agendamento__oculto) e não ocupam espaço. */
+.agendamento__data {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.agendamento__data select {
+  flex: 1 1 6rem;   /* cada campo quer 9rem; se os dois não couberem, o segundo desce */
+  width: auto;      /* a largura vem do flex (a regra comum põe 100%) */
+  min-width: 0;
 }
 
 /* Extras: 2 linhas, preenchendo por coluna (Pigmentação e Sobrancelha | Nevou) */
@@ -150,7 +164,10 @@
   cursor: pointer;
 }
 
-.agendamento__radio:checked + .agendamento__barbeiro { border-color: var(--dourado); }
+.agendamento__radio:checked + .agendamento__barbeiro { 
+  border-color: var(--dourado);
+  border-width: 3px;  
+}
 
 /* Foto do barbeiro em círculo. O recorte quadrado (400x400) já vem pronto em img/.
    object-fit: cover preenche o círculo; o fundo dourado só aparece se a foto falhar. */

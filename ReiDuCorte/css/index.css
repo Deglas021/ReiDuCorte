@@ -36,7 +36,10 @@ section[id] {
   font-size: 25.6px;
 }
  
-.topo__menu a:hover { color: var(--dourado); }
+.topo__menu a:hover { color: var(--dourado-claro); }
+
+.topo__menu a.btn-login { color: var(--dourado); }
+
  
 .topo__acoes {
   display: flex;
@@ -46,16 +49,6 @@ section[id] {
 }
  
 .acessibilidade { display: flex; gap: 12px; }
- 
- 
-.btn-login {
-  background: var(--dourado);
-  color: var(--preto);
-  text-decoration: none;
-  font-size: 25.6px;
-  padding: 0 24px;
-  line-height: 1.5;
-}
  
 .btn-login:hover { filter: brightness(1.1); }
 
@@ -250,12 +243,7 @@ section[id] {
  
  
 html[data-tema="dark"] .hero h1 { color: var(--branco); }
- 
 html[data-tema="dark"] .topo { background: var(--escuro); }
-html[data-tema="dark"] .topo__menu a { color: var(--dourado-claro); }
-html[data-tema="dark"] .topo__menu a:hover { color: var(--dourado); }
-html[data-tema="dark"] .btn-login { background: var(--preto); color: var(--dourado-claro); }
-
  
 @media (max-width: 900px) {
   :root { --altura-topo: 84px; }
