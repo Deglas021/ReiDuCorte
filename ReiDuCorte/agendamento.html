@@ -13,17 +13,27 @@
   - Extras (opcionais): checkboxes name="extras" (#extra-pigmentacao, #extra-sobrancelha,
     #extra-nevou), com data-nome e data-preco.
   - Barbeiro: radios name="barbeiro" (value: marcos, lucas, diego).
-  - Data: <input type="date" id="data">. O "min" (hoje) só o JS consegue colocar. O contato
-    do site diz "Seg a Sáb": domingos ficam por conta do JS.
+  - DATA: só DIA e MÊS, em dois <select>: #dia (name="dia") e #mes (name="mes"). Não existe
+    campo de ano: o ano é fixo em 2026 (regra interna). O antigo #data NÃO existe mais: a data
+    completa resulta da COMBINAÇÃO dos dois campos. Os valores têm zero à esquerda ("01".."31"
+    e "01".."12"), para compor 2026-MM-DD sem converter nada. O HTML traz os 31 dias e os 12
+    meses; o JS ajusta as listas. O contato do site diz "Seg a Sáb": domingos ficam com o JS.
   - Horário: 12 radios name="horario" (value "09:00", "10:00"... ) numa grade de 3x4.
   - RESUMO: #resumo-servico (reserva "—"), #resumo-extras (reserva "Nenhum") e #resumo-total
     (reserva "R$ 0", com aria-live). Total = preço do serviço/combo + preço de cada extra.
 
-  DISPONIBILIDADE: ao mudar o barbeiro ou a data, atualizar os horários (ocupados com o
-  atributo "disabled") e DESMARCAR o horário escolhido. Sugestão: deixar todos desabilitados
-  até haver barbeiro e data. No HTML, todos nascem habilitados.
+  REGRAS DE DATA (JS):
+  - Atualizar a lista de dias sempre que o mês mudar. 2026 não é bissexto: fevereiro tem 28 dias.
+  - Usar só datas válidas de 2026 que não sejam anteriores à data local atual.
+  - Não oferecer mês sem nenhuma data futura válida (remover essas opções de #mes). Depois de
+    31/12/2026 não sobra nenhum mês: tratar esse caso.
+  - Compor a data completa em ISO (YYYY-MM-DD) para disponibilidade, registro e dashboard.
 
-  CONFIRMAR: validar serviço, barbeiro, data e horário (extras são opcionais); conferir de
+  DISPONIBILIDADE: ao mudar o barbeiro, o mês ou o dia, atualizar os horários (ocupados com o
+  atributo "disabled") e DESMARCAR o horário escolhido. Sugestão: deixar todos desabilitados
+  até haver barbeiro, mês e dia. No HTML, todos nascem habilitados.
+
+  CONFIRMAR: validar serviço, barbeiro, data completa e horário (extras são opcionais); conferir de
   novo a disponibilidade; salvar no localStorage associado à conta conectada ANTES de
   redirecionar para dashboard.html. Chave e formato do registro: a combinar com o colega.
   ATENÇÃO: com "required", o navegador mostra o balão dele antes do submit chegar ao JS
@@ -130,8 +140,60 @@
       <!-- 3. Data e horário -->
       <section class="agendamento__bloco" aria-labelledby="titulo-data">
         <h2 id="titulo-data">Data e horário</h2>
-        <label for="data" class="agendamento__oculto">Data</label>
-        <input type="date" id="data" name="data" required>
+        <!-- Só dia e mês: o ano (2026) é regra interna e não aparece. Ver o contrato no topo. -->
+        <div class="agendamento__data">
+          <label for="dia" class="agendamento__oculto">Dia</label>
+          <select id="dia" name="dia" required>
+            <option value="">Dia</option>
+            <option value="01">1</option>
+            <option value="02">2</option>
+            <option value="03">3</option>
+            <option value="04">4</option>
+            <option value="05">5</option>
+            <option value="06">6</option>
+            <option value="07">7</option>
+            <option value="08">8</option>
+            <option value="09">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+          </select>
+          <label for="mes" class="agendamento__oculto">Mês</label>
+          <select id="mes" name="mes" required>
+            <option value="">Mês</option>
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+        </div>
 
         <fieldset class="agendamento__horarios">
           <legend class="agendamento__oculto">Horário</legend>

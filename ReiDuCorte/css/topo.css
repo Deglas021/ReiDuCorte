@@ -46,7 +46,7 @@
 }
  
 .topo__menu a[aria-current="page"] { color: var(--dourado-claro); }
-.topo__menu a:hover { color: var(--dourado); }
+.topo__menu a:hover { color: var(--dourado-claro); }
  
  
 /* ---------------------------------------------------------------------
