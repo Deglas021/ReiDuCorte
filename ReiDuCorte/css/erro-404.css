@@ -1,0 +1,96 @@
+/* =====================================================================
+   erro-404.css — regras SÓ DA PÁGINA 404
+   AFETA: SÓ A PÁGINA 404. Prefixo: .erro-404__
+   Cabeçalho: topo.css (aqui reduzido: só logo e A-/A+/tema). Paleta, tokens e
+   botões (.btn): global.css.
+   Sem tokens novos e sem regras dark: tudo vem dos tokens existentes.
+   Tamanhos pela escala do projeto (o Figma foi só base): [Suposição]
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   PARTE 1 — Conteúdo centralizado
+   O <main> ocupa a altura que sobra abaixo do cabeçalho e centraliza o conteúdo
+   na vertical e na horizontal. min-height (e não height): a página cresce
+   quando o A+ aumenta os textos, em vez de cortar o conteúdo.
+   --altura-topo vem do topo.css. O 100vh vem antes como reserva para
+   navegadores sem 100dvh (a barra de endereço do celular).
+   --------------------------------------------------------------------- */
+.erro-404 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--altura-topo));
+  min-height: calc(100dvh - var(--altura-topo));
+  padding: 48px 24px 64px;
+  text-align: center;
+}
+
+/* O reset de margem não está no global (de propósito) */
+.erro-404 h1,
+.erro-404 p { margin: 0; }
+
+
+/* ---------------------------------------------------------------------
+   PARTE 2 — Ícone, código e textos
+   [TOKEN] --card-fundo e --card-titulo no ícone (o mesmo par dos cartões).
+   [TOKEN] --titulo no título; o resto herda --texto do body.
+   --------------------------------------------------------------------- */
+.erro-404__icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8rem;
+  height: 8rem;
+  margin-bottom: 24px;
+  background: var(--card-fundo);
+  color: var(--card-titulo);
+  border-radius: 6px;
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.erro-404__codigo {
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;      /* o espaçamento deixa o código mais legível */
+}
+
+.erro-404__titulo {
+  margin-bottom: 12px;
+  font-size: 2.2rem;           /* mesmo tamanho dos títulos das outras páginas */
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--titulo);        /* light --preto | dark --branco */
+}
+
+.erro-404__texto { font-size: 1.5rem; }
+.erro-404__texto + .erro-404__texto { margin-top: 8px; }
+
+
+/* ---------------------------------------------------------------------
+   PARTE 3 — Botão
+   Usa .btn .btn--escuro do global (a troca de cor por tema já está lá).
+   --------------------------------------------------------------------- */
+.erro-404__acao {
+  margin-top: 24px;
+  padding: 6px 20px;           /* altura ~45px, igual à dos campos das outras páginas */
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 4 — Tablet e celular
+   O texto quebra linha sozinho (overflow-wrap do global); aqui só espaçamentos
+   e tamanhos. Não há rolagem horizontal: nada tem largura fixa maior que a tela.
+   --------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .erro-404 { padding: 40px 20px 48px; }
+}
+
+@media (max-width: 600px) {
+  .erro-404 { padding: 32px 16px 40px; }
+  .erro-404__icone { width: 6rem; height: 6rem; font-size: 3rem; }
+  .erro-404__titulo { font-size: 1.8rem; }
+  .erro-404__texto { font-size: 1.25rem; }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<!--
+  CONTRATO PARA O JAVASCRIPT (js/script.js)
+  Tema, fonte e persistência: mesmo contrato das outras páginas (data-tema e --escala na
+  tag <html>, tema e escala no localStorage). Botões: #btn-menos, #btn-mais e #btn-tema.
+  Esta página NÃO exige login: não aplicar a regra "sem sessão, ir para login.html".
+  NÃO redirecionar sozinho ao carregar: a pessoa escolhe pelo botão.
+
+  BOTÃO DE RETORNO: <a id="voltar-inicio" href="index.html">. O destino padrão é index.html,
+  para a página sempre oferecer uma saída (sem JS ou sem sessão). Ao carregar, o JS verifica a
+  MESMA sessão local do login; se for válida, troca o href para dashboard.html. Chave e formato
+  da sessão: os do colega (aqui nada foi inventado). ID PROPOSTO: confirmar com o colega.
+  O cabeçalho desta página é reduzido: sem menu e sem bloco de usuário. O JS não pode depender
+  deles (#usuario-nome e #usuario-logout NÃO existem aqui).
+
+  CAMINHOS (importante para uma página 404):
+  - Aqui estão RELATIVOS (css/..., img/..., index.html), para você revisar abrindo o arquivo
+    direto. O servidor entrega a 404 em QUALQUER endereço que não existe (ex.: /a/b/c). Nesse
+    caso o navegador procura css/global.css em /a/b/css/global.css e a página aparece sem estilo.
+  - Ao publicar, trocar por caminhos a partir da raiz: /css/global.css, /img/logobarbearia.png,
+    /index.html (Netlify, Vercel ou domínio próprio). Em GitHub Pages de projeto, o site fica em
+    /nome-do-repositorio/: usar /nome-do-repositorio/css/global.css etc.
+  PUBLICAR: 404.html na RAIZ da pasta publicada (na Vercel, na pasta de saída). O Live Server
+  não a mostra em rota inexistente: para ver o visual, abra 404.html direto.
+  ATIVAR: descomentar a tag <script> no final do <body>.
+-->
+
+<html lang="pt-BR" data-tema="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página não encontrada — Rei Du Corte</title>
+  <!-- A ORDEM IMPORTA: global.css → topo.css (cabeçalho) → css da página -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/topo.css">
+  <link rel="stylesheet" href="css/erro-404.css">
+</head>
+<body>
+
+  <!-- Cabeçalho reduzido: só a logo (leva à home, a rota pública segura) e A-/A+/tema -->
+  <header class="topo">
+    <a href="index.html" class="topo__logo">
+      <img src="img/logobarbearia.png" alt="Rei Du Corte — ir para a página inicial" width="217" height="217">
+    </a>
+    <div class="topo__acoes">
+      <div class="acessibilidade" role="group" aria-label="Acessibilidade">
+        <button type="button" id="btn-menos" class="btn-acess" aria-label="Diminuir fonte">A-</button>
+        <button type="button" id="btn-mais" class="btn-acess" aria-label="Aumentar fonte">A+</button>
+        <button type="button" id="btn-tema" class="btn-acess" aria-label="Alternar tema claro/escuro">
+          <svg class="icone-lua" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icone-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="erro-404">
+    <div class="erro-404__icone" aria-hidden="true">!</div>
+    <p class="erro-404__codigo">ERRO 404</p>
+    <h1 class="erro-404__titulo">Página não encontrada</h1>
+    <p class="erro-404__texto">O endereço que você tentou acessar não existe ou foi movido</p>
+    <p class="erro-404__texto">Verifique o link ou volte para a página inicial</p>
+    <a href="index.html" id="voltar-inicio" class="btn btn--escuro erro-404__acao">Voltar para o início</a>
+  </main>
+
+  <!-- <script src="js/script.js" defer></script> -->
+</body>
+</html>
