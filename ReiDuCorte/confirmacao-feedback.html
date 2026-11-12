@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<!--
+  CONTRATO PARA O JAVASCRIPT (js/script.js)
+  Tema, fonte e persistência: mesmo contrato das outras páginas (data-tema e --escala na
+  tag <html>, tema e escala no localStorage). Botões: #btn-menos, #btn-mais e #btn-tema.
+  PROTEÇÃO: sem sessão, redirecionar para login.html (mesma regra das outras páginas).
+  CABEÇALHO: mesmo contrato do dashboard (#usuario-nome, #usuario-logout; fechar o menu
+  removendo o atributo "open" do <details>). IDs PROPOSTOS: confirmar com o colega.
+
+  DESTINO: esta página se chama confirmacao-feedback.html (nome DEFINIDO AGORA). O fale-conosco
+  deve redirecionar para ela depois de salvar o feedback. O contrato do fale-conosco.html ainda
+  diz "destino não definido": atualizar lá.
+
+  DOIS ESTADOS (alternar só com o atributo "hidden"):
+  - #feedback-vazio  (visível por padrão): "não foi encontrado feedback". Fica assim se não
+    houver registro salvo (ou se o JS não rodar).
+  - #feedback-resumo (hidden por padrão): o resumo. Se houver registro, o JS preenche os campos,
+    remove "hidden" de #feedback-resumo e põe "hidden" em #feedback-vazio.
+  O CSS não pode (e não deve) aplicar display nesses dois elementos.
+
+  CAMPOS A PREENCHER (feedback lido do localStorage; chave e formato: a combinar)
+  - #avaliacao-recomendacao: "Sim", "Talvez" ou "Não" (o formulário guarda sim/talvez/nao).
+  - #avaliacao-nota: o número de 0 a 10. E #avaliacao-barra (<meter>): atributo "value" igual.
+  - #servicos-lista: 4 <li data-servico="corte|barba|combos|extras">, todos "hidden". Remover
+    "hidden" só dos escolhidos. Se nenhum foi escolhido, remover "hidden" de #servicos-nenhum.
+  - #mensagem-assunto: "Elogio", "Sugestão", "Reclamação" ou "Outro".
+  - #mensagem-texto: a mensagem. Preencher com textContent, NUNCA innerHTML: o texto foi digitado
+    pela pessoa e innerHTML executaria HTML/script colocado nele. As quebras de linha são
+    preservadas pelo CSS.
+  Tudo somente leitura: nada aqui é campo de formulário.
+
+  AÇÕES (links, sem JS): "Enviar novo feedback" -> fale-conosco.html (o formulário nasce em
+  branco); "Voltar para o início" -> dashboard.html.
+  ATIVAR: descomentar a tag <script> no final do <body>.
+  VER O RESUMO SEM JS: apague "hidden" de #feedback-resumo e dos <li> que quiser, e escreva
+  textos de teste nos <span> e no #mensagem-texto.
+-->
+
+<html lang="pt-BR" data-tema="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback recebido — Rei Du Corte</title>
+  <!-- A ORDEM IMPORTA: global.css → topo.css (cabeçalho) → css da página -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/topo.css">
+  <link rel="stylesheet" href="css/confirmacao-feedback.css">
+</head>
+<body>
+
+  <header class="topo">
+    <a href="dashboard.html" class="topo__logo">
+      <img src="img/logobarbearia.png" alt="Rei Du Corte — ir para o início" width="217" height="217">
+    </a>
+    <nav class="topo__menu" aria-label="Menu principal">
+      <a href="dashboard.html">Início</a>
+      <a href="agendamento.html">Agendar</a>
+      <a href="fale-conosco.html">Fale conosco</a>
+    </nav>
+    <div class="topo__acoes">
+      <div class="acessibilidade" role="group" aria-label="Acessibilidade">
+        <button type="button" id="btn-menos" class="btn-acess" aria-label="Diminuir fonte">A-</button>
+        <button type="button" id="btn-mais" class="btn-acess" aria-label="Aumentar fonte">A+</button>
+        <button type="button" id="btn-tema" class="btn-acess" aria-label="Alternar tema claro/escuro">
+          <svg class="icone-lua" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icone-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
+      <details class="topo__usuario">
+        <summary><span class="topo__nome" id="usuario-nome">Minha conta</span></summary>
+        <button type="button" id="usuario-logout" class="topo__logout">Logout</button>
+      </details>
+    </div>
+  </header>
+
+  <main class="confirmacao-feedback">
+
+    <!-- Estado sem feedback (visível por padrão) -->
+    <div id="feedback-vazio">
+      <h1 class="confirmacao-feedback__titulo">Nenhum feedback encontrado</h1>
+      <p class="confirmacao-feedback__apoio">Não foi encontrado nenhum feedback para exibir.</p>
+      <div class="confirmacao-feedback__acoes">
+        <a href="fale-conosco.html" class="btn btn--escuro confirmacao-feedback__acao">Ir para o Fale conosco</a>
+      </div>
+    </div>
+
+    <!-- Estado com feedback (hidden até o JS preencher) -->
+    <div id="feedback-resumo" hidden>
+
+      <div class="confirmacao-feedback__abertura">
+        <span class="confirmacao-feedback__icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </span>
+        <div>
+          <h1 class="confirmacao-feedback__titulo">Feedback recebido!</h1>
+          <p class="confirmacao-feedback__apoio">Aqui está o resumo do que você enviou.</p>
+        </div>
+      </div>
+
+      <section class="confirmacao-feedback__bloco" aria-labelledby="titulo-avaliacao">
+        <h2 id="titulo-avaliacao">Sua avaliação</h2>
+        <p class="confirmacao-feedback__etiqueta">Recomendaria: <span id="avaliacao-recomendacao"></span></p>
+        <meter id="avaliacao-barra" class="confirmacao-feedback__barra" min="0" max="10" value="0" aria-hidden="true"></meter>
+        <p class="confirmacao-feedback__nota">Nota: <span id="avaliacao-nota">0</span>/10</p>
+      </section>
+
+      <section class="confirmacao-feedback__bloco" aria-labelledby="titulo-servicos">
+        <h2 id="titulo-servicos">Serviços utilizados</h2>
+        <ul id="servicos-lista" class="confirmacao-feedback__etiquetas">
+          <li data-servico="corte" hidden>Corte</li>
+          <li data-servico="barba" hidden>Barba</li>
+          <li data-servico="combos" hidden>Combos</li>
+          <li data-servico="extras" hidden>Extras</li>
+        </ul>
+        <p id="servicos-nenhum" hidden>Nenhum serviço informado.</p>
+      </section>
+
+      <section class="confirmacao-feedback__bloco" aria-labelledby="titulo-mensagem">
+        <h2 id="titulo-mensagem">Sua mensagem</h2>
+        <p class="confirmacao-feedback__assunto">Assunto: <span id="mensagem-assunto"></span></p>
+        <div id="mensagem-texto" class="confirmacao-feedback__texto"></div>
+      </section>
+
+      <div class="confirmacao-feedback__acoes">
+        <a href="fale-conosco.html" class="btn btn--escuro confirmacao-feedback__acao">Enviar novo feedback</a>
+        <a href="dashboard.html" class="btn btn--contorno confirmacao-feedback__acao">Voltar para o início</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- <script src="js/script.js" defer></script> -->
+</body>
+</html>

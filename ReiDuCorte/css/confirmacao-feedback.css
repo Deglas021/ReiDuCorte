@@ -1,0 +1,212 @@
+/* =====================================================================
+   confirmacao-feedback.css — regras SÓ DA PÁGINA DE CONFIRMAÇÃO DO FEEDBACK
+   AFETA: SÓ CONFIRMAÇÃO. Prefixo: .confirmacao-feedback__
+   Cabeçalho: topo.css. Paleta, tokens e botões (.btn): global.css.
+   Sem tokens novos e sem regras dark: fundo, cartões e títulos usam os tokens
+   existentes; etiquetas, caixa da mensagem e ícone usam a paleta direto, iguais
+   nos dois temas, como nas capturas.
+   AVISO: nunca coloque "display" em #feedback-vazio, #feedback-resumo, nos <li> da
+   lista de serviços nem em #servicos-nenhum: o display anularia o atributo hidden.
+   Tamanhos pela escala do projeto (o Figma foi só base): [Suposição]
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   PARTE 1 — Links do cabeçalho NESTA página      [AFETA: SÓ CONFIRMAÇÃO]
+   O documento pede "Início", "Agendar" e "Fale conosco" brancos nos dois temas, sem
+   nenhum dourado. O topo.css (que esta página não altera) usa --topo-link, que no
+   dark é dourado claro. Por isso o ajuste fica aqui, depois do topo.css.
+   O hover (--dourado) continua valendo. Para seguir só o topo.css, apague este bloco
+   (as outras partes não dependem dele). A solução definitiva é trocar --topo-link
+   no global.css.
+   --------------------------------------------------------------------- */
+.topo__menu a { color: var(--branco); }
+
+
+/* ---------------------------------------------------------------------
+   PARTE 2 — Página, abertura e títulos
+   --------------------------------------------------------------------- */
+.confirmacao-feedback {
+  max-width: 70rem;     /* mesmo container das outras páginas */
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+}
+
+/* O reset de margem não está no global (de propósito) */
+.confirmacao-feedback h1,
+.confirmacao-feedback h2,
+.confirmacao-feedback p,
+.confirmacao-feedback ul { margin: 0; }
+
+.confirmacao-feedback__titulo {
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--titulo);       /* [TOKEN] light --preto | dark --branco */
+}
+
+.confirmacao-feedback__apoio { font-size: 1.5rem; }   /* herda --texto do body */
+
+/* Ícone + título lado a lado */
+.confirmacao-feedback__abertura {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.confirmacao-feedback__icone {
+  flex: none;                 /* o círculo não encolhe quando o texto é longo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: var(--dourado);
+}
+
+.confirmacao-feedback__icone svg {
+  width: 55%;
+  height: 55%;
+  fill: none;
+  stroke: var(--preto);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 3 — Cartões
+   [TOKEN] --card-fundo, --card-titulo e --card-texto, como nas outras páginas.
+   --------------------------------------------------------------------- */
+.confirmacao-feedback__bloco {
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--card-fundo);
+  border: 1px solid var(--preto);
+  border-radius: 6px;
+  color: var(--card-texto);
+}
+
+.confirmacao-feedback__bloco h2 {
+  margin-bottom: 16px;
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--card-titulo);
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 4 — Conteúdo dos cartões (somente leitura)
+   --------------------------------------------------------------------- */
+
+/* Etiquetas (recomendação e serviços): fundo --preto e texto --branco nos dois temas */
+.confirmacao-feedback__etiqueta,
+.confirmacao-feedback__etiquetas li {
+  padding: 6px 16px;
+  background: var(--preto);
+  color: var(--branco);
+  border-radius: 6px;
+  font-size: 1.25rem;
+}
+
+.confirmacao-feedback__etiqueta { display: inline-block; }
+
+/* O display flex fica no <ul>, nunca nos <li>: eles recebem o atributo hidden */
+.confirmacao-feedback__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  padding: 0;
+  list-style: none;
+}
+
+/* Barra da nota: <meter> com a parte preenchida em dourado.
+   O track é a cor do texto do cartão a 30% (a nota também aparece escrita abaixo,
+   então a barra é só um reforço visual e a informação não depende da cor). */
+.confirmacao-feedback__barra {
+  --trilho: color-mix(in srgb, var(--card-texto) 30%, transparent);
+  display: block;
+  width: 100%;
+  height: 0.75rem;
+  margin-top: 20px;
+  appearance: none;
+  border: 0;
+  border-radius: 6px;
+  background: var(--trilho);
+}
+.confirmacao-feedback__barra::-webkit-meter-bar {
+  height: 0.75rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--trilho);
+}
+.confirmacao-feedback__barra::-webkit-meter-optimum-value,
+.confirmacao-feedback__barra::-webkit-meter-suboptimum-value,
+.confirmacao-feedback__barra::-webkit-meter-even-less-good-value {
+  background: var(--dourado);
+  border-radius: 6px;
+}
+.confirmacao-feedback__barra::-moz-meter-bar {
+  background: var(--dourado);
+  border-radius: 6px;
+}
+
+.confirmacao-feedback__nota {
+  margin-top: 8px;
+  text-align: right;
+  font-size: 1.5rem;
+  color: var(--card-titulo);
+}
+
+#servicos-nenhum { font-size: 1.25rem; }   /* só aparece (JS) se nenhum serviço foi escolhido */
+
+.confirmacao-feedback__assunto { font-size: 1.25rem; }
+
+/* Caixa da mensagem. pre-wrap preserva as quebras de linha digitadas;
+   overflow-wrap: anywhere evita que uma palavra gigante estoure o cartão. */
+.confirmacao-feedback__texto {
+  min-height: 6rem;
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--preto);
+  color: var(--branco);
+  border-radius: 6px;
+  font-size: 1.25rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 5 — Ações
+   .btn .btn--escuro e .btn--contorno do global (troca de cor por tema já resolvida lá).
+   --------------------------------------------------------------------- */
+.confirmacao-feedback__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.confirmacao-feedback__acao {
+  padding: 6px 20px;     /* altura ~45px, igual à dos campos das outras páginas */
+  text-align: center;
+}
+
+
+/* ---------------------------------------------------------------------
+   PARTE 6 — Tablet e celular
+   Os cartões já são uma coluna só: aqui só espaçamentos e as ações.
+   --------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .confirmacao-feedback { padding: 32px 20px 48px; }
+}
+
+@media (max-width: 600px) {
+  .confirmacao-feedback { padding: 24px 16px 48px; }
+  .confirmacao-feedback__bloco { padding: 16px; }
+  .confirmacao-feedback__icone { width: 3rem; height: 3rem; }
+  .confirmacao-feedback__acao { flex: 1 1 100%; }   /* botões na largura toda */
+}
